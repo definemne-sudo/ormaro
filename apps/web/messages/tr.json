@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "title": "Ormaro · Karadağ'da ikinci el",
+    "description": "Karadağ'da ikinci el eşya al, sat. Kendi dilinde ilan ver, mesajlaş, buluş."
+  },
+  "home": {
+    "tagline": "Karadağ'da ikinci el al, sat.",
+    "comingSoon": "Çok yakında. Şu an uygulamayı kuruyoruz.",
+    "categoriesTitle": "Kategoriler",
+    "languageLabel": "Dil"
+  },
+  "nav": {
+    "home": "Ana sayfa",
+    "search": "Ara",
+    "post": "İlan ver",
+    "messages": "Mesajlar",
+    "profile": "Profil"
+  },
+  "categories": {
+    "home": "Ev ve mobilya",
+    "electronics": "Elektronik",
+    "clothing": "Giyim ve aksesuar",
+    "kids": "Bebek ve çocuk",
+    "sports": "Spor ve hobi",
+    "other": "Diğer"
+  },
+  "conditions": {
+    "new": "Yeni",
+    "like_new": "Yeni gibi",
+    "lightly_used": "Az kullanılmış",
+    "good": "İyi durumda"
+  }
+}

@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Onest Variable", system-ui, sans-serif;
+
+  --color-brand: #ffae66;
+  --color-brand-strong: #c2410c;
+  --color-brand-deep: #9a3412;
+  --color-brand-tint: #fff1e5;
+  --color-ink: #131a2a;
+  --color-muted: #5b6475;
+  --color-line: #e3e6ec;
+  --color-field: #c9ced8;
+  --color-surface: #f5f6f8;
+  --color-placeholder: #dde2ea;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}

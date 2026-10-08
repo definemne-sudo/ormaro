@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "title": "Ormaro · Polovne stvari u Crnoj Gori",
+    "description": "Kupuj i prodaj polovne stvari u Crnoj Gori. Postavi oglas na svom jeziku, dopisuj se, dogovori susret."
+  },
+  "home": {
+    "tagline": "Kupuj i prodaj polovne stvari u Crnoj Gori.",
+    "comingSoon": "Uskoro. Upravo pravimo aplikaciju.",
+    "categoriesTitle": "Kategorije",
+    "languageLabel": "Jezik"
+  },
+  "nav": {
+    "home": "Početna",
+    "search": "Pretraga",
+    "post": "Postavi oglas",
+    "messages": "Poruke",
+    "profile": "Profil"
+  },
+  "categories": {
+    "home": "Kuća i namještaj",
+    "electronics": "Elektronika",
+    "clothing": "Odjeća i aksesoari",
+    "kids": "Bebe i djeca",
+    "sports": "Sport i hobi",
+    "other": "Ostalo"
+  },
+  "conditions": {
+    "new": "Novo",
+    "like_new": "Kao novo",
+    "lightly_used": "Malo korišćeno",
+    "good": "Dobro stanje"
+  }
+}

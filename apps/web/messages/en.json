@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "title": "Ormaro · Second-hand in Montenegro",
+    "description": "Buy and sell second-hand in Montenegro. List in your own language, chat, meet up."
+  },
+  "home": {
+    "tagline": "Buy and sell second-hand in Montenegro.",
+    "comingSoon": "Coming soon. We're building the app right now.",
+    "categoriesTitle": "Categories",
+    "languageLabel": "Language"
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "post": "Sell",
+    "messages": "Messages",
+    "profile": "Profile"
+  },
+  "categories": {
+    "home": "Home and furniture",
+    "electronics": "Electronics",
+    "clothing": "Clothing and accessories",
+    "kids": "Baby and kids",
+    "sports": "Sports and hobbies",
+    "other": "Other"
+  },
+  "conditions": {
+    "new": "New",
+    "like_new": "Like new",
+    "lightly_used": "Lightly used",
+    "good": "Good condition"
+  }
+}

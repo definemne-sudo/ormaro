@@ -1,0 +1,16 @@
+{
+  "name": "ormaro",
+  "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @ormaro/web dev",
+    "build": "pnpm --filter @ormaro/web build",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --filter @ormaro/db generate",
+    "db:migrate": "pnpm --filter @ormaro/db migrate",
+    "db:seed": "pnpm --filter @ormaro/db seed"
+  }
+}
