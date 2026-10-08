@@ -3,18 +3,129 @@
     "title": "Ormaro · Karadağ'da ikinci el",
     "description": "Karadağ'da ikinci el eşya al, sat. Kendi dilinde ilan ver, mesajlaş, buluş."
   },
-  "home": {
-    "tagline": "Karadağ'da ikinci el al, sat.",
-    "comingSoon": "Çok yakında. Şu an uygulamayı kuruyoruz.",
-    "categoriesTitle": "Kategoriler",
-    "languageLabel": "Dil"
+  "common": {
+    "language": "Dil"
   },
   "nav": {
+    "label": "Ana menü",
     "home": "Ana sayfa",
     "search": "Ara",
-    "post": "İlan ver",
+    "sell": "İlan ver",
     "messages": "Mesajlar",
     "profile": "Profil"
+  },
+  "home": {
+    "tagline": "Karadağ'da ikinci el al, sat.",
+    "searchPlaceholder": "Ne arıyorsun?",
+    "categoriesTitle": "Kategoriler",
+    "latestTitle": "Yeni ilanlar",
+    "empty": "Henüz ilan yok. İlk ilanı sen ver!",
+    "sellCta": "İlan ver"
+  },
+  "search": {
+    "title": "Ara",
+    "placeholder": "Ne arıyorsun?",
+    "submit": "Ara",
+    "filters": "Filtreler",
+    "category": "Kategori",
+    "allCategories": "Tüm kategoriler",
+    "city": "Şehir",
+    "allCities": "Tüm şehirler",
+    "priceMin": "En az (€)",
+    "priceMax": "En çok (€)",
+    "condition": "Durum",
+    "anyCondition": "Hepsi",
+    "clear": "Temizle",
+    "apply": "Uygula",
+    "results": "{count} sonuç",
+    "sort": "Sırala",
+    "sortNew": "En yeni",
+    "sortPriceAsc": "En ucuz",
+    "sortPriceDesc": "En pahalı",
+    "noResults": "Bu aramaya uyan ilan yok. Filtreleri azaltmayı dene."
+  },
+  "listing": {
+    "photos": "Fotoğraflar",
+    "photoAlt": "Fotoğraf {n} / {total}",
+    "swipeHint": "{total} fotoğraf · görmek için kaydır",
+    "status": {
+      "active": "Yayında",
+      "sold": "Satıldı",
+      "removed": "Yayından kaldırıldı"
+    },
+    "favorite": "Favorilere ekle",
+    "unfavorite": "Favorilerden çıkar",
+    "writtenIn": "İlan dili: {language}",
+    "description": "Açıklama",
+    "anonymous": "Satıcı",
+    "memberSince": "{date} tarihinden beri üye",
+    "ownerTitle": "Bu senin ilanın",
+    "markSold": "Satıldı olarak işaretle",
+    "remove": "Yayından kaldır",
+    "reactivate": "Yeniden yayınla",
+    "message": "Mesaj gönder",
+    "messagingSoon": "Mesajlaşma çok yakında geliyor.",
+    "loginToFavorite": "Favorilere eklemek için giriş yap"
+  },
+  "sell": {
+    "title": "İlan ver",
+    "photos": "Fotoğraflar",
+    "photosHint": "En az 1, en çok 8 fotoğraf. İlki kapak olur.",
+    "coverPhoto": "Kapak fotoğrafı",
+    "photoN": "Fotoğraf {n}",
+    "uploading": "Yükleniyor",
+    "uploadFailedShort": "Hata",
+    "cover": "Kapak",
+    "removePhoto": "Fotoğrafı kaldır",
+    "addPhoto": "Ekle",
+    "titleLabel": "Başlık",
+    "categoryLabel": "Kategori",
+    "choose": "Seç",
+    "conditionLabel": "Durum",
+    "descriptionLabel": "Açıklama",
+    "optional": "(isteğe bağlı)",
+    "priceLabel": "Fiyat (€)",
+    "cityLabel": "Şehir",
+    "languageLabel": "İlanın dili",
+    "languageHint": "İlan yazdığın dilde yayınlanır.",
+    "submit": "İlanı yayınla",
+    "submitting": "Yayınlanıyor…",
+    "waitUploads": "Fotoğraflar yükleniyor…",
+    "errors": {
+      "storageMissing": "İlan verme şu an kapalı: fotoğraf deposu henüz ayarlanmadı.",
+      "uploadFailed": "Bir fotoğraf yüklenemedi. Kaldırıp tekrar dene.",
+      "photosRequired": "En az bir fotoğraf ekle.",
+      "tooManyPhotos": "En çok 8 fotoğraf ekleyebilirsin.",
+      "titleInvalid": "Başlık 3 ile 120 karakter arasında olmalı.",
+      "priceInvalid": "Geçerli bir fiyat yaz.",
+      "cityRequired": "Şehir seç.",
+      "categoryRequired": "Kategori seç.",
+      "conditionRequired": "Ürünün durumunu seç.",
+      "generic": "Bir şeyler ters gitti. Tekrar dene."
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "memberSince": "{date} tarihinden beri üye",
+    "myListings": "İlanlarım",
+    "favorites": "Favoriler",
+    "emptyListings": "Henüz ilanın yok.",
+    "emptyFavorites": "Favorilere eklediğin ilanlar burada görünür.",
+    "newListing": "Yeni ilan ver",
+    "logout": "Çıkış yap"
+  },
+  "login": {
+    "title": "Giriş yap veya kayıt ol",
+    "subtitle": "İlan vermek ve favorilere eklemek için hesap gerekir. Hesabın yoksa otomatik oluşturulur.",
+    "error": "Giriş yapılamadı. Tekrar dene.",
+    "google": "Google ile devam et",
+    "notConfigured": "Giriş henüz açılmadı.",
+    "continueWithout": "Giriş yapmadan gez",
+    "terms": "Devam ederek kullanım koşullarını ve gizlilik politikasını kabul etmiş olursun."
+  },
+  "messages": {
+    "title": "Mesajlar",
+    "soon": "Satıcılarla mesajlaşma çok yakında burada olacak."
   },
   "categories": {
     "home": "Ev ve mobilya",

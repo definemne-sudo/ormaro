@@ -3,18 +3,129 @@
     "title": "Ormaro · Second-hand in Montenegro",
     "description": "Buy and sell second-hand in Montenegro. List in your own language, chat, meet up."
   },
-  "home": {
-    "tagline": "Buy and sell second-hand in Montenegro.",
-    "comingSoon": "Coming soon. We're building the app right now.",
-    "categoriesTitle": "Categories",
-    "languageLabel": "Language"
+  "common": {
+    "language": "Language"
   },
   "nav": {
+    "label": "Main menu",
     "home": "Home",
     "search": "Search",
-    "post": "Sell",
+    "sell": "Sell",
     "messages": "Messages",
     "profile": "Profile"
+  },
+  "home": {
+    "tagline": "Buy and sell second-hand in Montenegro.",
+    "searchPlaceholder": "What are you looking for?",
+    "categoriesTitle": "Categories",
+    "latestTitle": "New listings",
+    "empty": "No listings yet. Be the first to post one!",
+    "sellCta": "Sell something"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "What are you looking for?",
+    "submit": "Search",
+    "filters": "Filters",
+    "category": "Category",
+    "allCategories": "All categories",
+    "city": "City",
+    "allCities": "All cities",
+    "priceMin": "Min (€)",
+    "priceMax": "Max (€)",
+    "condition": "Condition",
+    "anyCondition": "Any",
+    "clear": "Clear",
+    "apply": "Apply",
+    "results": "{count, plural, one {# result} other {# results}}",
+    "sort": "Sort",
+    "sortNew": "Newest",
+    "sortPriceAsc": "Cheapest",
+    "sortPriceDesc": "Most expensive",
+    "noResults": "Nothing matches this search. Try removing some filters."
+  },
+  "listing": {
+    "photos": "Photos",
+    "photoAlt": "Photo {n} of {total}",
+    "swipeHint": "{total} photos · swipe to see more",
+    "status": {
+      "active": "Live",
+      "sold": "Sold",
+      "removed": "Removed"
+    },
+    "favorite": "Add to favourites",
+    "unfavorite": "Remove from favourites",
+    "writtenIn": "Written in {language}",
+    "description": "Description",
+    "anonymous": "Seller",
+    "memberSince": "Member since {date}",
+    "ownerTitle": "This is your listing",
+    "markSold": "Mark as sold",
+    "remove": "Remove listing",
+    "reactivate": "Put back online",
+    "message": "Send a message",
+    "messagingSoon": "Messaging is coming very soon.",
+    "loginToFavorite": "Log in to save favourites"
+  },
+  "sell": {
+    "title": "Sell something",
+    "photos": "Photos",
+    "photosHint": "1 to 8 photos. The first one is the cover.",
+    "coverPhoto": "Cover photo",
+    "photoN": "Photo {n}",
+    "uploading": "Uploading",
+    "uploadFailedShort": "Failed",
+    "cover": "Cover",
+    "removePhoto": "Remove photo",
+    "addPhoto": "Add",
+    "titleLabel": "Title",
+    "categoryLabel": "Category",
+    "choose": "Choose",
+    "conditionLabel": "Condition",
+    "descriptionLabel": "Description",
+    "optional": "(optional)",
+    "priceLabel": "Price (€)",
+    "cityLabel": "City",
+    "languageLabel": "Listing language",
+    "languageHint": "Your listing is shown in the language you write it in.",
+    "submit": "Publish listing",
+    "submitting": "Publishing…",
+    "waitUploads": "Uploading photos…",
+    "errors": {
+      "storageMissing": "Posting is switched off for now: photo storage isn't set up yet.",
+      "uploadFailed": "A photo couldn't be uploaded. Remove it and try again.",
+      "photosRequired": "Add at least one photo.",
+      "tooManyPhotos": "You can add up to 8 photos.",
+      "titleInvalid": "The title must be 3 to 120 characters long.",
+      "priceInvalid": "Enter a valid price.",
+      "cityRequired": "Choose a city.",
+      "categoryRequired": "Choose a category.",
+      "conditionRequired": "Choose the item's condition.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "memberSince": "Member since {date}",
+    "myListings": "My listings",
+    "favorites": "Favourites",
+    "emptyListings": "You haven't posted anything yet.",
+    "emptyFavorites": "Listings you save will show up here.",
+    "newListing": "Post a new listing",
+    "logout": "Log out"
+  },
+  "login": {
+    "title": "Log in or sign up",
+    "subtitle": "You need an account to post listings and save favourites. If you don't have one, it's created automatically.",
+    "error": "Couldn't log you in. Please try again.",
+    "google": "Continue with Google",
+    "notConfigured": "Login isn't available yet.",
+    "continueWithout": "Browse without logging in",
+    "terms": "By continuing you accept the terms of use and the privacy policy."
+  },
+  "messages": {
+    "title": "Messages",
+    "soon": "Chatting with sellers will be here very soon."
   },
   "categories": {
     "home": "Home and furniture",

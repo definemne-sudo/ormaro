@@ -3,18 +3,129 @@
     "title": "Ormaro · Polovne stvari u Crnoj Gori",
     "description": "Kupuj i prodaj polovne stvari u Crnoj Gori. Postavi oglas na svom jeziku, dopisuj se, dogovori susret."
   },
-  "home": {
-    "tagline": "Kupuj i prodaj polovne stvari u Crnoj Gori.",
-    "comingSoon": "Uskoro. Upravo pravimo aplikaciju.",
-    "categoriesTitle": "Kategorije",
-    "languageLabel": "Jezik"
+  "common": {
+    "language": "Jezik"
   },
   "nav": {
+    "label": "Glavni meni",
     "home": "Početna",
     "search": "Pretraga",
-    "post": "Postavi oglas",
+    "sell": "Prodaj",
     "messages": "Poruke",
     "profile": "Profil"
+  },
+  "home": {
+    "tagline": "Kupuj i prodaj polovne stvari u Crnoj Gori.",
+    "searchPlaceholder": "Šta tražiš?",
+    "categoriesTitle": "Kategorije",
+    "latestTitle": "Novi oglasi",
+    "empty": "Još nema oglasa. Postavi prvi!",
+    "sellCta": "Postavi oglas"
+  },
+  "search": {
+    "title": "Pretraga",
+    "placeholder": "Šta tražiš?",
+    "submit": "Traži",
+    "filters": "Filteri",
+    "category": "Kategorija",
+    "allCategories": "Sve kategorije",
+    "city": "Grad",
+    "allCities": "Svi gradovi",
+    "priceMin": "Od (€)",
+    "priceMax": "Do (€)",
+    "condition": "Stanje",
+    "anyCondition": "Svejedno",
+    "clear": "Očisti",
+    "apply": "Primijeni",
+    "results": "Rezultati: {count}",
+    "sort": "Sortiraj",
+    "sortNew": "Najnovije",
+    "sortPriceAsc": "Najjeftinije",
+    "sortPriceDesc": "Najskuplje",
+    "noResults": "Nema oglasa za ovu pretragu. Probaj sa manje filtera."
+  },
+  "listing": {
+    "photos": "Fotografije",
+    "photoAlt": "Fotografija {n} od {total}",
+    "swipeHint": "{total} fotografija · prevuci za više",
+    "status": {
+      "active": "Aktivan",
+      "sold": "Prodato",
+      "removed": "Uklonjen"
+    },
+    "favorite": "Dodaj u omiljene",
+    "unfavorite": "Ukloni iz omiljenih",
+    "writtenIn": "Jezik oglasa: {language}",
+    "description": "Opis",
+    "anonymous": "Prodavac",
+    "memberSince": "Član od {date}",
+    "ownerTitle": "Ovo je tvoj oglas",
+    "markSold": "Označi kao prodato",
+    "remove": "Ukloni oglas",
+    "reactivate": "Ponovo objavi",
+    "message": "Pošalji poruku",
+    "messagingSoon": "Poruke stižu vrlo brzo.",
+    "loginToFavorite": "Prijavi se da sačuvaš omiljene"
+  },
+  "sell": {
+    "title": "Postavi oglas",
+    "photos": "Fotografije",
+    "photosHint": "Od 1 do 8 fotografija. Prva je naslovna.",
+    "coverPhoto": "Naslovna fotografija",
+    "photoN": "Fotografija {n}",
+    "uploading": "Šalje se",
+    "uploadFailedShort": "Greška",
+    "cover": "Naslovna",
+    "removePhoto": "Ukloni fotografiju",
+    "addPhoto": "Dodaj",
+    "titleLabel": "Naslov",
+    "categoryLabel": "Kategorija",
+    "choose": "Izaberi",
+    "conditionLabel": "Stanje",
+    "descriptionLabel": "Opis",
+    "optional": "(nije obavezno)",
+    "priceLabel": "Cijena (€)",
+    "cityLabel": "Grad",
+    "languageLabel": "Jezik oglasa",
+    "languageHint": "Oglas se prikazuje na jeziku na kojem ga napišeš.",
+    "submit": "Objavi oglas",
+    "submitting": "Objavljuje se…",
+    "waitUploads": "Fotografije se šalju…",
+    "errors": {
+      "storageMissing": "Postavljanje oglasa trenutno nije moguće: skladište za fotografije još nije podešeno.",
+      "uploadFailed": "Jedna fotografija nije poslata. Ukloni je i pokušaj ponovo.",
+      "photosRequired": "Dodaj bar jednu fotografiju.",
+      "tooManyPhotos": "Možeš dodati najviše 8 fotografija.",
+      "titleInvalid": "Naslov mora imati od 3 do 120 znakova.",
+      "priceInvalid": "Upiši ispravnu cijenu.",
+      "cityRequired": "Izaberi grad.",
+      "categoryRequired": "Izaberi kategoriju.",
+      "conditionRequired": "Izaberi stanje predmeta.",
+      "generic": "Nešto nije u redu. Pokušaj ponovo."
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "memberSince": "Član od {date}",
+    "myListings": "Moji oglasi",
+    "favorites": "Omiljeni",
+    "emptyListings": "Još nemaš oglasa.",
+    "emptyFavorites": "Oglasi koje sačuvaš pojaviće se ovdje.",
+    "newListing": "Postavi novi oglas",
+    "logout": "Odjavi se"
+  },
+  "login": {
+    "title": "Prijava ili registracija",
+    "subtitle": "Za postavljanje oglasa i čuvanje omiljenih potreban je nalog. Ako ga nemaš, napravićemo ga automatski.",
+    "error": "Prijava nije uspjela. Pokušaj ponovo.",
+    "google": "Nastavi sa Google nalogom",
+    "notConfigured": "Prijava još nije dostupna.",
+    "continueWithout": "Razgledaj bez prijave",
+    "terms": "Nastavkom prihvataš uslove korišćenja i politiku privatnosti."
+  },
+  "messages": {
+    "title": "Poruke",
+    "soon": "Dopisivanje sa prodavcima biće ovdje vrlo brzo."
   },
   "categories": {
     "home": "Kuća i namještaj",

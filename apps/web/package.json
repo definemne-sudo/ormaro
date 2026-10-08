@@ -10,11 +10,14 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1148.0",
+    "@aws-sdk/s3-request-presigner": "^3.1148.0",
     "@fontsource-variable/onest": "^5.3.1",
     "@ormaro/db": "workspace:*",
     "@ormaro/shared": "workspace:*",
     "drizzle-orm": "^0.45.4",
     "next": "^16.4.0",
+    "next-auth": "5.0.0-beta.32",
     "next-intl": "^4.14.9",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"

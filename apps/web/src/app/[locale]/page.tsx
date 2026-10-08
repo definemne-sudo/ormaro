@@ -1,64 +1,65 @@
-import { categoryKeys, localeNames, type Locale } from "@ormaro/shared";
+import { getDb } from "@ormaro/db";
+import { categoryKeys } from "@ormaro/shared";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Logo } from "@/components/Logo";
+import { SearchIcon } from "@/components/icons";
+import { ListingGrid } from "@/components/ListingCards";
 import { Link } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
+import { latestListings } from "@/lib/listings";
+
+export const dynamic = "force-dynamic";
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("home");
   const tc = await getTranslations("categories");
+  const items = getDb() ? await latestListings(24) : [];
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-3xl flex-col">
-      <header className="flex items-center justify-between gap-4 border-b border-line bg-white px-4 py-3">
-        <Logo size={32} />
-        <nav aria-label={t("languageLabel")} className="flex flex-wrap gap-1">
-          {routing.locales.map((l) => (
-            <Link
-              key={l}
-              href="/"
-              locale={l}
-              aria-current={l === locale ? "true" : undefined}
-              className={
-                "flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold " +
-                (l === locale
-                  ? "bg-brand-tint text-brand-deep"
-                  : "text-ink hover:bg-surface")
-              }
-            >
-              <span className="sm:hidden" aria-hidden="true">
-                {l.toUpperCase()}
-              </span>
-              <span className="sr-only sm:not-sr-only">{localeNames[l as Locale]}</span>
-            </Link>
-          ))}
-        </nav>
-      </header>
+    <div className="flex flex-col gap-6 px-4 py-5">
+      <section className="flex flex-col gap-3">
+        <h1 className="text-xl font-bold tracking-tight">{t("tagline")}</h1>
+        <Link
+          href="/search"
+          className="flex min-h-12 items-center gap-2.5 rounded-xl border border-line bg-white px-3.5 text-[15px] text-muted"
+        >
+          <SearchIcon width={20} height={20} />
+          {t("searchPlaceholder")}
+        </Link>
+      </section>
 
-      <main className="flex flex-1 flex-col gap-8 px-4 py-10">
-        <section className="flex flex-col gap-3">
-          <h1 className="text-3xl font-bold tracking-tight">{t("tagline")}</h1>
-          <p className="text-lg text-muted">{t("comingSoon")}</p>
-        </section>
-
-        <section className="flex flex-col gap-3">
-          <h2 className="text-base font-bold">{t("categoriesTitle")}</h2>
-          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {categoryKeys.map((key) => (
-              <li
-                key={key}
-                className="flex min-h-12 items-center justify-center rounded-xl border border-line bg-white px-2 text-center text-sm font-semibold"
+      <section className="flex flex-col gap-2.5">
+        <h2 className="text-base font-bold">{t("categoriesTitle")}</h2>
+        <ul className="grid grid-cols-3 gap-2">
+          {categoryKeys.map((key) => (
+            <li key={key}>
+              <Link
+                href={{ pathname: "/search", query: { category: key } }}
+                className="flex min-h-12 items-center justify-center rounded-xl border border-line bg-white px-1.5 text-center text-[13px] leading-tight font-semibold"
               >
                 {tc(key)}
-              </li>
-            ))}
-          </ul>
-        </section>
-      </main>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      <footer className="px-4 py-6 text-sm text-muted">© 2026 Ormaro</footer>
+      <section className="flex flex-col gap-2.5">
+        <h2 className="text-base font-bold">{t("latestTitle")}</h2>
+        {items.length > 0 ? (
+          <ListingGrid items={items} />
+        ) : (
+          <div className="flex flex-col items-start gap-3 rounded-2xl border border-line bg-white p-5">
+            <p className="text-[15px] text-muted">{t("empty")}</p>
+            <Link
+              href="/sell"
+              className="flex min-h-12 items-center rounded-xl bg-brand px-5 font-bold text-ink"
+            >
+              {t("sellCta")}
+            </Link>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
