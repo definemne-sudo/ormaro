@@ -5,16 +5,16 @@ import type { ReactNode } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ChatIcon, HomeIcon, PlusIcon, SearchIcon, UserIcon } from "./icons";
 
-type Item = { href: string; label: string; icon: ReactNode; primary?: boolean };
+type Item = { href: string; label: string; icon: ReactNode; primary?: boolean; badge?: ReactNode };
 
-export function BottomNav() {
+export function BottomNav({ messagesBadge }: { messagesBadge?: ReactNode }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const items: Item[] = [
     { href: "/", label: t("home"), icon: <HomeIcon /> },
     { href: "/search", label: t("search"), icon: <SearchIcon /> },
     { href: "/sell", label: t("sell"), icon: <PlusIcon width={20} height={20} />, primary: true },
-    { href: "/messages", label: t("messages"), icon: <ChatIcon /> },
+    { href: "/messages", label: t("messages"), icon: <ChatIcon />, badge: messagesBadge },
     { href: "/profile", label: t("profile"), icon: <UserIcon /> },
   ];
 
@@ -41,7 +41,10 @@ export function BottomNav() {
                     {item.icon}
                   </span>
                 ) : (
-                  item.icon
+                  <span className="relative">
+                    {item.icon}
+                    {item.badge}
+                  </span>
                 )}
                 {item.label}
               </Link>

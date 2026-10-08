@@ -12,7 +12,8 @@
     "search": "Search",
     "sell": "Sell",
     "messages": "Messages",
-    "profile": "Profile"
+    "profile": "Profile",
+    "unread": "{count} unread messages"
   },
   "home": {
     "tagline": "Buy and sell second-hand in Montenegro.",
@@ -64,8 +65,11 @@
     "remove": "Remove listing",
     "reactivate": "Put back online",
     "message": "Send a message",
-    "messagingSoon": "Messaging is coming very soon.",
-    "loginToFavorite": "Log in to save favourites"
+    "rating": "{avg} ({count} reviews)",
+    "ratingLabel": "Rated {avg} out of 5",
+    "safety": "Meet face to face in a busy place. Don't pay before you see the item.",
+    "report": "Report this listing",
+    "ownerMessages": "Messages about this listing"
   },
   "sell": {
     "title": "Sell something",
@@ -112,7 +116,9 @@
     "emptyListings": "You haven't posted anything yet.",
     "emptyFavorites": "Listings you save will show up here.",
     "newListing": "Post a new listing",
-    "logout": "Log out"
+    "logout": "Log out",
+    "publicProfile": "My public profile",
+    "admin": "Admin panel"
   },
   "login": {
     "title": "Log in or sign up",
@@ -122,10 +128,6 @@
     "notConfigured": "Login isn't available yet.",
     "continueWithout": "Browse without logging in",
     "terms": "By continuing you accept the terms of use and the privacy policy."
-  },
-  "messages": {
-    "title": "Messages",
-    "soon": "Chatting with sellers will be here very soon."
   },
   "categories": {
     "home": "Home and furniture",
@@ -140,5 +142,125 @@
     "like_new": "Like new",
     "lightly_used": "Lightly used",
     "good": "Good condition"
+  },
+  "chat": {
+    "title": "Messages",
+    "tabs": {
+      "all": "All",
+      "buying": "Buying",
+      "selling": "Selling"
+    },
+    "empty": "No messages yet. Tap “Send a message” on a listing you like.",
+    "offerPreview": "Offer: {amount}",
+    "someone": "A user",
+    "yourListing": "Your listing",
+    "you": "You",
+    "unread": "Unread",
+    "back": "Back to messages",
+    "roleSeller": "Seller",
+    "roleBuyer": "Buyer",
+    "report": "Report",
+    "listingStatus": {
+      "active": "For sale",
+      "sold": "Sold",
+      "removed": "Removed"
+    },
+    "safety": "Meet face to face in a busy place. Don't pay before you see the item.",
+    "acceptedNote": "The {amount} offer was accepted. Agree on a place and time here.",
+    "markSold": "Mark as sold",
+    "rate": "Rate {name}",
+    "offerYours": "Your offer",
+    "offerTheirs": "Offer received",
+    "offerStatus": {
+      "pending": "Awaiting reply",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    },
+    "decline": "Decline",
+    "accept": "Accept",
+    "firstMessage": "Write the first message. You could ask if it's still available.",
+    "listingRemoved": "This listing was removed, so new messages can't be sent.",
+    "errors": {
+      "empty": "You can't send an empty message.",
+      "tooLong": "Message is too long (2000 characters max).",
+      "invalidOffer": "Enter a valid amount.",
+      "generic": "Couldn't send. Try again."
+    },
+    "offerAmount": "Offer amount (€)",
+    "cancel": "Cancel",
+    "sendOffer": "Send offer",
+    "offer": "Make an offer",
+    "placeholder": "Write a message",
+    "send": "Send"
+  },
+  "user": {
+    "someone": "A user",
+    "memberSince": "Member since {date}",
+    "rating": "{avg} ({count} reviews)",
+    "ratingLabel": "Rated {avg} out of 5",
+    "noRatings": "No reviews yet",
+    "report": "Report this user",
+    "listings": "Listings for sale",
+    "noListings": "Nothing for sale right now.",
+    "reviews": "Reviews",
+    "noReviews": "No reviews yet."
+  },
+  "review": {
+    "title": "Leave a review",
+    "someone": "this person",
+    "already": "You've already reviewed this listing. Thanks!",
+    "notAllowed": "You can leave a review once both of you have written in this conversation.",
+    "back": "Back to conversation",
+    "ratingRequired": "Please choose a rating from 1 to 5.",
+    "question": "How was your deal with {name}?",
+    "stars": {
+      "1": "Very bad",
+      "2": "Bad",
+      "3": "Okay",
+      "4": "Good",
+      "5": "Very good"
+    },
+    "commentLabel": "Comment",
+    "optional": "(optional)",
+    "commentHint": "Your comment will be public on {name}'s profile.",
+    "submit": "Submit review"
+  },
+  "report": {
+    "title": "Report",
+    "titleListing": "Report listing",
+    "titleUser": "Report user",
+    "someone": "A user",
+    "doneTitle": "We received your report",
+    "doneBody": "Our team will review it and take action if needed. Thank you.",
+    "home": "Back to home",
+    "reasonRequired": "Please choose a reason.",
+    "reasonLabel": "Why are you reporting this?",
+    "reasons": {
+      "scam": "Suspected scam",
+      "misleading": "Misleading info or photos",
+      "prohibited": "Prohibited item",
+      "inappropriate": "Inappropriate content or behaviour",
+      "wrong_category": "Wrong category",
+      "other": "Other"
+    },
+    "detailsLabel": "Details",
+    "optional": "(optional)",
+    "privacy": "Your name isn't shown to the person you report.",
+    "submit": "Send report"
+  },
+  "admin": {
+    "title": "Admin panel",
+    "open": "Open reports",
+    "closed": "Closed",
+    "empty": "No reports in this list.",
+    "listing": "Listing",
+    "owner": "Owner",
+    "user": "User",
+    "banned": "Banned",
+    "reporter": "Reported by",
+    "dismiss": "Close",
+    "removeListing": "Remove listing",
+    "ban": "Ban user",
+    "unban": "Unban"
   }
 }

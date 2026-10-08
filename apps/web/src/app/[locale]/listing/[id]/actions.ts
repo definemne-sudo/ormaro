@@ -1,13 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getCurrentUser, requireUser } from "@/lib/session";
+import { redirect } from "next/navigation";
+import { getActiveUser } from "@/lib/session";
 import { setListingStatus, toggleFavorite } from "@/lib/listings";
 
 export async function toggleFavoriteAction(formData: FormData) {
   const locale = String(formData.get("locale") ?? "me");
   const id = String(formData.get("id") ?? "");
-  const user = await requireUser(locale, `/listing/${id}`);
+  const user = await getActiveUser();
+  if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/${locale}/listing/${id}`)}`);
   if (!/^[0-9a-f-]{36}$/.test(id)) return;
   await toggleFavorite(user.id, id);
   revalidatePath(`/${locale}/listing/${id}`);
@@ -15,7 +17,7 @@ export async function toggleFavoriteAction(formData: FormData) {
 }
 
 export async function setStatusAction(formData: FormData) {
-  const user = await getCurrentUser();
+  const user = await getActiveUser();
   if (!user) return;
   const locale = String(formData.get("locale") ?? "me");
   const id = String(formData.get("id") ?? "");
@@ -27,4 +29,5 @@ export async function setStatusAction(formData: FormData) {
   revalidatePath(`/${locale}/listing/${id}`);
   revalidatePath(`/${locale}/profile`);
   revalidatePath(`/${locale}`);
+  revalidatePath(`/${locale}/messages`, "layout");
 }

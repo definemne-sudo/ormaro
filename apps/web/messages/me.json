@@ -12,7 +12,8 @@
     "search": "Pretraga",
     "sell": "Prodaj",
     "messages": "Poruke",
-    "profile": "Profil"
+    "profile": "Profil",
+    "unread": "{count} nepročitanih poruka"
   },
   "home": {
     "tagline": "Kupuj i prodaj polovne stvari u Crnoj Gori.",
@@ -64,8 +65,11 @@
     "remove": "Ukloni oglas",
     "reactivate": "Ponovo objavi",
     "message": "Pošalji poruku",
-    "messagingSoon": "Poruke stižu vrlo brzo.",
-    "loginToFavorite": "Prijavi se da sačuvaš omiljene"
+    "rating": "{avg} ({count} ocjena)",
+    "ratingLabel": "Ocjena {avg} od 5",
+    "safety": "Nađite se uživo na prometnom mjestu. Ne plaćajte prije nego što vidite predmet.",
+    "report": "Prijavi ovaj oglas",
+    "ownerMessages": "Poruke za ovaj oglas"
   },
   "sell": {
     "title": "Postavi oglas",
@@ -112,7 +116,9 @@
     "emptyListings": "Još nemaš oglasa.",
     "emptyFavorites": "Oglasi koje sačuvaš pojaviće se ovdje.",
     "newListing": "Postavi novi oglas",
-    "logout": "Odjavi se"
+    "logout": "Odjavi se",
+    "publicProfile": "Moj javni profil",
+    "admin": "Administracija"
   },
   "login": {
     "title": "Prijava ili registracija",
@@ -122,10 +128,6 @@
     "notConfigured": "Prijava još nije dostupna.",
     "continueWithout": "Razgledaj bez prijave",
     "terms": "Nastavkom prihvataš uslove korišćenja i politiku privatnosti."
-  },
-  "messages": {
-    "title": "Poruke",
-    "soon": "Dopisivanje sa prodavcima biće ovdje vrlo brzo."
   },
   "categories": {
     "home": "Kuća i namještaj",
@@ -140,5 +142,125 @@
     "like_new": "Kao novo",
     "lightly_used": "Malo korišćeno",
     "good": "Dobro stanje"
+  },
+  "chat": {
+    "title": "Poruke",
+    "tabs": {
+      "all": "Sve",
+      "buying": "Kupujem",
+      "selling": "Prodajem"
+    },
+    "empty": "Još nemaš poruka. Dodirni „Pošalji poruku” na oglasu koji ti se dopada.",
+    "offerPreview": "Ponuda: {amount}",
+    "someone": "Korisnik",
+    "yourListing": "Tvoj oglas",
+    "you": "Ti",
+    "unread": "Nepročitano",
+    "back": "Nazad na poruke",
+    "roleSeller": "Prodavac",
+    "roleBuyer": "Kupac",
+    "report": "Prijavi",
+    "listingStatus": {
+      "active": "Na prodaju",
+      "sold": "Prodato",
+      "removed": "Uklonjeno"
+    },
+    "safety": "Nađite se uživo na prometnom mjestu. Ne plaćajte prije nego što vidite predmet.",
+    "acceptedNote": "Ponuda od {amount} je prihvaćena. Dogovorite mjesto i vrijeme ovdje.",
+    "markSold": "Označi kao prodato",
+    "rate": "Ocijeni korisnika {name}",
+    "offerYours": "Tvoja ponuda",
+    "offerTheirs": "Primljena ponuda",
+    "offerStatus": {
+      "pending": "Čeka odgovor",
+      "accepted": "Prihvaćeno",
+      "declined": "Odbijeno"
+    },
+    "decline": "Odbij",
+    "accept": "Prihvati",
+    "firstMessage": "Napiši prvu poruku. Možeš pitati da li je predmet još dostupan.",
+    "listingRemoved": "Oglas je uklonjen, pa nove poruke nije moguće slati.",
+    "errors": {
+      "empty": "Ne možeš poslati praznu poruku.",
+      "tooLong": "Poruka je preduga (najviše 2000 znakova).",
+      "invalidOffer": "Unesi ispravan iznos.",
+      "generic": "Slanje nije uspjelo. Pokušaj ponovo."
+    },
+    "offerAmount": "Iznos ponude (€)",
+    "cancel": "Otkaži",
+    "sendOffer": "Pošalji ponudu",
+    "offer": "Daj ponudu",
+    "placeholder": "Napiši poruku",
+    "send": "Pošalji"
+  },
+  "user": {
+    "someone": "Korisnik",
+    "memberSince": "Član od {date}",
+    "rating": "{avg} ({count} ocjena)",
+    "ratingLabel": "Ocjena {avg} od 5",
+    "noRatings": "Još nema ocjena",
+    "report": "Prijavi ovog korisnika",
+    "listings": "Oglasi na prodaju",
+    "noListings": "Trenutno nema oglasa na prodaju.",
+    "reviews": "Ocjene",
+    "noReviews": "Još nema ocjena."
+  },
+  "review": {
+    "title": "Ocijeni",
+    "someone": "ovu osobu",
+    "already": "Već si ocijenio/la ovaj oglas. Hvala!",
+    "notAllowed": "Ocjenu možeš ostaviti kada oboje napišete poruku u ovom razgovoru.",
+    "back": "Nazad na razgovor",
+    "ratingRequired": "Izaberi ocjenu od 1 do 5.",
+    "question": "Kako je prošla kupoprodaja sa: {name}?",
+    "stars": {
+      "1": "Veoma loše",
+      "2": "Loše",
+      "3": "Može",
+      "4": "Dobro",
+      "5": "Odlično"
+    },
+    "commentLabel": "Komentar",
+    "optional": "(nije obavezno)",
+    "commentHint": "Komentar će biti javan na profilu korisnika {name}.",
+    "submit": "Pošalji ocjenu"
+  },
+  "report": {
+    "title": "Prijava",
+    "titleListing": "Prijavi oglas",
+    "titleUser": "Prijavi korisnika",
+    "someone": "Korisnik",
+    "doneTitle": "Primili smo tvoju prijavu",
+    "doneBody": "Naš tim će je pregledati i reagovati ako je potrebno. Hvala.",
+    "home": "Nazad na početnu",
+    "reasonRequired": "Izaberi razlog.",
+    "reasonLabel": "Zašto prijavljuješ?",
+    "reasons": {
+      "scam": "Sumnja na prevaru",
+      "misleading": "Obmanjujući podaci ili fotografije",
+      "prohibited": "Zabranjen predmet",
+      "inappropriate": "Neprimjeren sadržaj ili ponašanje",
+      "wrong_category": "Pogrešna kategorija",
+      "other": "Ostalo"
+    },
+    "detailsLabel": "Detalji",
+    "optional": "(nije obavezno)",
+    "privacy": "Prijavljenoj osobi se ne prikazuje tvoje ime.",
+    "submit": "Pošalji prijavu"
+  },
+  "admin": {
+    "title": "Administracija",
+    "open": "Otvorene prijave",
+    "closed": "Zatvorene",
+    "empty": "Nema prijava na ovoj listi.",
+    "listing": "Oglas",
+    "owner": "Vlasnik",
+    "user": "Korisnik",
+    "banned": "Blokiran",
+    "reporter": "Prijavio/la",
+    "dismiss": "Zatvori",
+    "removeListing": "Ukloni oglas",
+    "ban": "Blokiraj korisnika",
+    "unban": "Odblokiraj"
   }
 }

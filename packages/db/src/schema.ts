@@ -25,6 +25,7 @@ export const conditionEnum = pgEnum("item_condition", [
 ]);
 export const listingStatusEnum = pgEnum("listing_status", ["active", "sold", "removed"]);
 export const messageKindEnum = pgEnum("message_kind", ["text", "offer"]);
+export const offerStatusEnum = pgEnum("offer_status", ["pending", "accepted", "declined"]);
 export const reportTargetEnum = pgEnum("report_target", ["listing", "user"]);
 export const reportReasonEnum = pgEnum("report_reason", [
   "scam",
@@ -58,6 +59,8 @@ export const users = pgTable("users", {
   locale: localeEnum("locale").notNull().default("me"),
   cityKey: text("city_key").references(() => cities.key),
   role: userRoleEnum("role").notNull().default("user"),
+  /** Yönetici tarafından engellendiyse dolu; engelli kullanıcı ilan veremez, mesaj gönderemez. */
+  bannedAt: timestamp("banned_at", { withTimezone: true }),
   createdAt: createdAt(),
 });
 
@@ -165,6 +168,7 @@ export const messages = pgTable(
     body: text("body").notNull().default(""),
     /** Yalnızca teklif mesajlarında dolu: teklif edilen tutar, avro. */
     offerEuro: integer("offer_euro"),
+    offerStatus: offerStatusEnum("offer_status"),
     readAt: timestamp("read_at", { withTimezone: true }),
     createdAt: createdAt(),
   },
@@ -172,7 +176,7 @@ export const messages = pgTable(
     index("messages_conversation_idx").on(t.conversationId, t.createdAt),
     check(
       "messages_offer_check",
-      sql`(${t.kind} = 'offer') = (${t.offerEuro} is not null)`,
+      sql`(${t.kind} = 'offer') = (${t.offerEuro} is not null and ${t.offerStatus} is not null)`,
     ),
   ],
 );

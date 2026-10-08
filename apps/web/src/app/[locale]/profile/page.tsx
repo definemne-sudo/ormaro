@@ -5,7 +5,7 @@ import { ListingList } from "@/components/ListingCards";
 import { Link } from "@/i18n/navigation";
 import { formatMonthYear } from "@/lib/format";
 import { favoriteListings, getUser, listingsBySeller } from "@/lib/listings";
-import { requireUser } from "@/lib/session";
+import { getActiveUser, requireUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +32,7 @@ export default async function ProfilePage({
   const { tab: tabParam } = await searchParams;
   const tab = tabParam === "favorites" ? "favorites" : "listings";
   const t = await getTranslations("profile");
-  const profile = await getUser(user.id);
+  const [profile, active] = await Promise.all([getUser(user.id), getActiveUser()]);
   const items =
     tab === "favorites" ? await favoriteListings(user.id) : await listingsBySeller(user.id, true);
 
@@ -92,6 +92,23 @@ export default async function ProfilePage({
           </Link>
         )}
       </section>
+
+      <nav className="flex flex-col gap-2 px-4 pb-3">
+        <Link
+          href={`/user/${user.id}`}
+          className="flex min-h-12 items-center justify-center rounded-xl border border-field bg-white font-semibold"
+        >
+          {t("publicProfile")}
+        </Link>
+        {active?.role === "admin" && (
+          <Link
+            href="/admin"
+            className="flex min-h-12 items-center justify-center rounded-xl border border-field bg-white font-semibold"
+          >
+            {t("admin")}
+          </Link>
+        )}
+      </nav>
 
       <form action={logout} className="px-4 pb-4">
         <button

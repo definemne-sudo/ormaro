@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { BottomNav } from "./BottomNav";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Logo } from "./Logo";
+import { UnreadBadge } from "./UnreadBadge";
 
 /** Uygulamanın ortak iskeleti: üstte logo ve dil, altta menü. */
 export function AppShell({ children }: { children: ReactNode }) {
@@ -17,7 +18,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         </Suspense>
       </header>
       <main className="flex flex-1 flex-col">{children}</main>
-      <BottomNav />
+      <BottomNav
+        messagesBadge={
+          <Suspense>
+            <UnreadBadge />
+          </Suspense>
+        }
+      />
     </div>
   );
 }

@@ -12,7 +12,8 @@
     "search": "Ara",
     "sell": "İlan ver",
     "messages": "Mesajlar",
-    "profile": "Profil"
+    "profile": "Profil",
+    "unread": "{count} okunmamış mesaj"
   },
   "home": {
     "tagline": "Karadağ'da ikinci el al, sat.",
@@ -64,8 +65,11 @@
     "remove": "Yayından kaldır",
     "reactivate": "Yeniden yayınla",
     "message": "Mesaj gönder",
-    "messagingSoon": "Mesajlaşma çok yakında geliyor.",
-    "loginToFavorite": "Favorilere eklemek için giriş yap"
+    "rating": "{avg} ({count} değerlendirme)",
+    "ratingLabel": "5 üzerinden {avg} puan",
+    "safety": "Yüz yüze, kalabalık bir yerde buluşun. Ürünü görmeden ödeme yapmayın.",
+    "report": "Bu ilanı şikâyet et",
+    "ownerMessages": "Bu ilana gelen mesajlar"
   },
   "sell": {
     "title": "İlan ver",
@@ -112,7 +116,9 @@
     "emptyListings": "Henüz ilanın yok.",
     "emptyFavorites": "Favorilere eklediğin ilanlar burada görünür.",
     "newListing": "Yeni ilan ver",
-    "logout": "Çıkış yap"
+    "logout": "Çıkış yap",
+    "publicProfile": "Herkese açık profilim",
+    "admin": "Yönetim paneli"
   },
   "login": {
     "title": "Giriş yap veya kayıt ol",
@@ -122,10 +128,6 @@
     "notConfigured": "Giriş henüz açılmadı.",
     "continueWithout": "Giriş yapmadan gez",
     "terms": "Devam ederek kullanım koşullarını ve gizlilik politikasını kabul etmiş olursun."
-  },
-  "messages": {
-    "title": "Mesajlar",
-    "soon": "Satıcılarla mesajlaşma çok yakında burada olacak."
   },
   "categories": {
     "home": "Ev ve mobilya",
@@ -140,5 +142,125 @@
     "like_new": "Yeni gibi",
     "lightly_used": "Az kullanılmış",
     "good": "İyi durumda"
+  },
+  "chat": {
+    "title": "Mesajlar",
+    "tabs": {
+      "all": "Tümü",
+      "buying": "Alırken",
+      "selling": "Satarken"
+    },
+    "empty": "Henüz mesajın yok. Beğendiğin bir ilanda “Mesaj gönder”e dokun.",
+    "offerPreview": "Teklif: {amount}",
+    "someone": "Bir kullanıcı",
+    "yourListing": "Senin ilanın",
+    "you": "Sen",
+    "unread": "Okunmamış",
+    "back": "Mesajlara dön",
+    "roleSeller": "Satıcı",
+    "roleBuyer": "Alıcı",
+    "report": "Şikâyet et",
+    "listingStatus": {
+      "active": "Satışta",
+      "sold": "Satıldı",
+      "removed": "Kaldırıldı"
+    },
+    "safety": "Yüz yüze, kalabalık bir yerde buluşun. Ürünü görmeden ödeme yapmayın.",
+    "acceptedNote": "{amount} teklifi kabul edildi. Buluşma yeri ve saatini buradan konuşabilirsiniz.",
+    "markSold": "Satıldı olarak işaretle",
+    "rate": "{name} adlı kişiyi değerlendir",
+    "offerYours": "Senin teklifin",
+    "offerTheirs": "Gelen teklif",
+    "offerStatus": {
+      "pending": "Yanıt bekliyor",
+      "accepted": "Kabul edildi",
+      "declined": "Reddedildi"
+    },
+    "decline": "Reddet",
+    "accept": "Kabul et",
+    "firstMessage": "İlk mesajı sen yaz. Ürün hâlâ duruyor mu diye sorabilirsin.",
+    "listingRemoved": "Bu ilan kaldırıldığı için yeni mesaj gönderilemiyor.",
+    "errors": {
+      "empty": "Boş mesaj gönderilemez.",
+      "tooLong": "Mesaj çok uzun (en çok 2000 karakter).",
+      "invalidOffer": "Geçerli bir tutar yaz.",
+      "generic": "Gönderilemedi. Tekrar dene."
+    },
+    "offerAmount": "Teklif tutarı (€)",
+    "cancel": "Vazgeç",
+    "sendOffer": "Teklifi gönder",
+    "offer": "Teklif ver",
+    "placeholder": "Mesaj yaz",
+    "send": "Gönder"
+  },
+  "user": {
+    "someone": "Bir kullanıcı",
+    "memberSince": "{date} tarihinden beri üye",
+    "rating": "{avg} ({count} değerlendirme)",
+    "ratingLabel": "5 üzerinden {avg} puan",
+    "noRatings": "Henüz değerlendirme yok",
+    "report": "Bu kullanıcıyı şikâyet et",
+    "listings": "Satıştaki ilanlar",
+    "noListings": "Şu an satışta ilanı yok.",
+    "reviews": "Değerlendirmeler",
+    "noReviews": "Henüz değerlendirme yapılmamış."
+  },
+  "review": {
+    "title": "Değerlendir",
+    "someone": "bu kişi",
+    "already": "Bu ilan için değerlendirmeni zaten yaptın. Teşekkürler!",
+    "notAllowed": "Değerlendirme yapabilmek için iki tarafın da bu konuşmada mesaj yazmış olması gerekir.",
+    "back": "Konuşmaya dön",
+    "ratingRequired": "Lütfen 1 ile 5 arasında bir puan seç.",
+    "question": "{name} ile alışverişin nasıldı?",
+    "stars": {
+      "1": "Çok kötü",
+      "2": "Kötü",
+      "3": "İdare eder",
+      "4": "İyi",
+      "5": "Çok iyi"
+    },
+    "commentLabel": "Yorum",
+    "optional": "(isteğe bağlı)",
+    "commentHint": "Yorumun {name} adlı kişinin profilinde herkese görünür.",
+    "submit": "Değerlendirmeyi gönder"
+  },
+  "report": {
+    "title": "Şikâyet et",
+    "titleListing": "İlanı şikâyet et",
+    "titleUser": "Kullanıcıyı şikâyet et",
+    "someone": "Bir kullanıcı",
+    "doneTitle": "Şikâyetin bize ulaştı",
+    "doneBody": "Ekibimiz inceleyip gerekirse önlem alacak. Teşekkürler.",
+    "home": "Ana sayfaya dön",
+    "reasonRequired": "Lütfen bir neden seç.",
+    "reasonLabel": "Neden şikâyet ediyorsun?",
+    "reasons": {
+      "scam": "Dolandırıcılık şüphesi",
+      "misleading": "Yanıltıcı bilgi ya da fotoğraf",
+      "prohibited": "Yasak ürün",
+      "inappropriate": "Uygunsuz içerik ya da davranış",
+      "wrong_category": "Yanlış kategori",
+      "other": "Diğer"
+    },
+    "detailsLabel": "Ayrıntı",
+    "optional": "(isteğe bağlı)",
+    "privacy": "Şikâyet ettiğin kişiye adın gösterilmez.",
+    "submit": "Şikâyeti gönder"
+  },
+  "admin": {
+    "title": "Yönetim paneli",
+    "open": "Açık şikâyetler",
+    "closed": "Kapananlar",
+    "empty": "Bu listede şikâyet yok.",
+    "listing": "İlan",
+    "owner": "Sahibi",
+    "user": "Kullanıcı",
+    "banned": "Engelli",
+    "reporter": "Şikâyet eden",
+    "dismiss": "Kapat",
+    "removeListing": "İlanı kaldır",
+    "ban": "Kullanıcıyı engelle",
+    "unban": "Engeli kaldır"
   }
 }

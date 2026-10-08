@@ -20,18 +20,33 @@ export const googleLoginEnabled = Boolean(
   process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET,
 );
 
+/** ADMIN_EMAILS: virgülle ayrılmış yönetici e-postaları. Bu adreslerle girenler yönetici olur. */
+function isAdminEmail(email: string): boolean {
+  return (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean)
+    .includes(email);
+}
+
 async function upsertUser(input: { email: string; name?: string | null; image?: string | null }) {
   const db = getDb();
   if (!db) throw new Error("DATABASE_URL tanımlı değil; kullanıcı kaydedilemedi.");
   const email = input.email.trim().toLowerCase();
+  const admin = isAdminEmail(email);
   const [row] = await db
     .insert(schema.users)
-    .values({ email, name: input.name ?? null, avatarUrl: input.image ?? null })
+    .values({
+      email,
+      name: input.name ?? null,
+      avatarUrl: input.image ?? null,
+      role: admin ? "admin" : "user",
+    })
     .onConflictDoUpdate({
       target: schema.users.email,
-      set: { avatarUrl: input.image ?? null },
+      set: { avatarUrl: input.image ?? null, ...(admin ? { role: "admin" as const } : {}) },
     })
-    .returning({ id: schema.users.id, role: schema.users.role });
+    .returning({ id: schema.users.id, role: schema.users.role, bannedAt: schema.users.bannedAt });
   if (!row) throw new Error("Kullanıcı kaydedilemedi.");
   return row;
 }
@@ -61,6 +76,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user?.email) {
         const row = await upsertUser({ email: user.email, name: user.name, image: user.image });
+        // Engellenmiş hesap oturum açamaz.
+        if (row.bannedAt) throw new Error("banned");
         token.uid = row.id;
         token.role = row.role;
       }

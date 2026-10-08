@@ -7,8 +7,11 @@ import { HeartIcon, ImageIcon } from "@/components/icons";
 import { Link } from "@/i18n/navigation";
 import { formatMonthYear, formatPrice, formatRelative } from "@/lib/format";
 import { getListing, isFavorite } from "@/lib/listings";
+import { ratingSummary } from "@/lib/reviews";
 import { getCurrentUser } from "@/lib/session";
 import { photoSrc } from "@/lib/storage";
+import { Stars } from "@/components/Stars";
+import { startConversationAction } from "../../messages/actions";
 import { setStatusAction, toggleFavoriteAction } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +38,12 @@ export default async function ListingPage({ params }: Props) {
   const tc = await getTranslations("categories");
   const tcond = await getTranslations("conditions");
   const { listing, seller, photos } = data;
-  const fav = user ? await isFavorite(user.id, listing.id) : false;
+  const [fav, rating] = await Promise.all([
+    user ? isFavorite(user.id, listing.id) : Promise.resolve(false),
+    ratingSummary(seller.id),
+  ]);
+  const avg =
+    rating.average !== null ? rating.average.toFixed(1).replace(".", locale === "en" ? "." : ",") : null;
   const loc = locale as Locale;
 
   return (
@@ -117,21 +125,38 @@ export default async function ListingPage({ params }: Props) {
           </section>
         )}
 
-        <section className="flex items-center gap-3 rounded-2xl border border-line p-3">
+        <Link
+          href={`/user/${seller.id}`}
+          className="flex items-center gap-3 rounded-2xl border border-line p-3"
+        >
           <span className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-brand-tint text-lg font-bold text-brand-deep">
             {(seller.name ?? "?").slice(0, 1).toUpperCase()}
           </span>
-          <span className="flex flex-col">
+          <span className="flex min-w-0 flex-1 flex-col">
             <span className="text-[15px] font-bold">{seller.name ?? t("anonymous")}</span>
-            <span className="text-[13px] text-muted">
-              {t("memberSince", { date: formatMonthYear(seller.createdAt, loc) })}
-            </span>
+            {avg ? (
+              <span className="flex items-center gap-1.5 text-[13px] font-semibold">
+                <Stars value={rating.average ?? 0} size={14} label={t("ratingLabel", { avg })} />
+                {t("rating", { avg, count: rating.count })}
+              </span>
+            ) : (
+              <span className="text-[13px] text-muted">
+                {t("memberSince", { date: formatMonthYear(seller.createdAt, loc) })}
+              </span>
+            )}
           </span>
-        </section>
+          <span aria-hidden="true" className="text-muted">›</span>
+        </Link>
 
         {isOwner ? (
           <section className="flex flex-col gap-2">
             <h2 className="text-[15px] font-bold">{t("ownerTitle")}</h2>
+            <Link
+              href={{ pathname: "/messages", query: { tab: "selling" } }}
+              className="flex min-h-12 items-center justify-center rounded-xl border border-field font-bold"
+            >
+              {t("ownerMessages")}
+            </Link>
             <div className="flex flex-wrap gap-2">
               {listing.status === "active" ? (
                 <>
@@ -144,21 +169,23 @@ export default async function ListingPage({ params }: Props) {
             </div>
           </section>
         ) : (
-          <section className="flex flex-col gap-2">
-            <button
-              type="button"
-              disabled
-              className="min-h-13 rounded-xl bg-brand font-bold text-ink opacity-60"
-            >
-              {t("message")}
-            </button>
-            <p className="text-center text-sm text-muted">{t("messagingSoon")}</p>
-            {!user && (
+          <section className="flex flex-col gap-3">
+            {listing.status === "active" && (
+              <form action={startConversationAction}>
+                <input type="hidden" name="listingId" value={listing.id} />
+                <input type="hidden" name="locale" value={locale} />
+                <button type="submit" className="min-h-13 w-full rounded-xl bg-brand font-bold text-ink">
+                  {t("message")}
+                </button>
+              </form>
+            )}
+            <p className="rounded-xl bg-brand-tint px-3 py-2 text-center text-[13px] text-brand-deep">{t("safety")}</p>
+            {user && (
               <Link
-                href={{ pathname: "/login", query: { next: `/${locale}/listing/${listing.id}` } }}
-                className="text-center text-sm font-semibold text-brand-strong"
+                href={{ pathname: "/report", query: { listing: listing.id } }}
+                className="self-center text-sm font-semibold text-muted underline"
               >
-                {t("loginToFavorite")}
+                {t("report")}
               </Link>
             )}
           </section>

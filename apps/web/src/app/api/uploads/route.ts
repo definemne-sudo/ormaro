@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { auth } from "@/auth";
+import { getActiveUser } from "@/lib/session";
 import { isStorageConfigured, putPhoto } from "@/lib/storage";
 
 export const runtime = "nodejs";
@@ -12,8 +12,8 @@ const TYPES: Record<string, "webp" | "jpg"> = { "image/webp": "webp", "image/jpe
  * sunucu depoya yazar ve nesne anahtarını döner. İlan kaydedilince anahtar ilana bağlanır.
  */
 export async function POST(request: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getActiveUser();
+  if (!user) {
     return Response.json({ error: "unauthorized" }, { status: 401 });
   }
   if (!isStorageConfigured()) {
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "too_large" }, { status: 413 });
   }
 
-  const key = `listings/${session.user.id}/${randomUUID()}.${ext}`;
+  const key = `listings/${user.id}/${randomUUID()}.${ext}`;
   await putPhoto(key, new Uint8Array(await file.arrayBuffer()), file.type);
   return Response.json({ key });
 }

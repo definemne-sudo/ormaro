@@ -3,14 +3,14 @@
 import { listingInput, MAX_PHOTOS_PER_LISTING } from "@ormaro/shared";
 import { redirect } from "next/navigation";
 import { createListing } from "@/lib/listings";
-import { getCurrentUser } from "@/lib/session";
+import { getActiveUser } from "@/lib/session";
 import { isValidPhotoKey } from "@/lib/storage";
 
 export type SellState = { error?: string; fields?: Record<string, string> };
 
 export async function createListingAction(_prev: SellState, formData: FormData): Promise<SellState> {
   const locale = String(formData.get("locale") ?? "me");
-  const user = await getCurrentUser();
+  const user = await getActiveUser();
   if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/${locale}/sell`)}`);
 
   const fields = Object.fromEntries(
