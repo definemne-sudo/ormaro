@@ -56,6 +56,7 @@ Not: Ücretsiz katman 30 günlük deneme kredisinden sonra ayda 1 $ kredi veriyo
 | Değişken | Nereden |
 | --- | --- |
 | `AUTH_SECRET` | Rastgele uzun bir değer (`openssl rand -base64 32`) |
+| `AUTH_URL` | Sitenin asıl adresi, örn. `https://ormaro.vercel.app`. Google'a hep bu adres bildirilir; yoksa Vercel'in uzun yayın adreslerinden girişte `redirect_uri_mismatch` hatası çıkar |
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | Google Cloud → Credentials → OAuth client ID (Web). Yönlendirme adresi: `https://<alan-adı>/api/auth/callback/google` |
 | `BUCKET_ENDPOINT`, `BUCKET_ACCESS_KEY_ID`, `BUCKET_SECRET_ACCESS_KEY`, `BUCKET_NAME`, `BUCKET_REGION` | Railway → Bucket → Credentials (`BUCKET_NAME` için görünen adı değil `BUCKET` değerini kullanın) |
 | `BUCKET_PATH_STYLE` | Yalnızca Railway path-style adres istiyorsa `1` |
