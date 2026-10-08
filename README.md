@@ -40,12 +40,7 @@ pnpm db:generate  # şema değişince yeni göç dosyası üretir
 
 1. railway.com'da GitHub ile giriş yapın, **New Project → Database → PostgreSQL** seçin.
 2. Postgres servisinin **Variables** sekmesinden `DATABASE_PUBLIC_URL` değerini kopyalayın. Vercel Railway'in iç ağında olmadığı için iç adres (`DATABASE_URL`) çalışmaz.
-3. Bu adresle göçleri ve başlangıç verisini bir kez çalıştırın:
-
-```bash
-DATABASE_URL="<DATABASE_PUBLIC_URL>" pnpm db:migrate
-DATABASE_URL="<DATABASE_PUBLIC_URL>" pnpm db:seed
-```
+3. Tabloları elle kurmanız gerekmez: Vercel her yayında önce göçleri ve başlangıç verisini çalıştırır (`apps/web/vercel.json`). İkisi de tekrar çalıştırmaya karşı güvenlidir.
 
 Not: Ücretsiz katman 30 günlük deneme kredisinden sonra ayda 1 $ kredi veriyor. Sürekli açık bir veritabanının buna sığıp sığmadığını deneme süresinde **Usage** sayfasından izleyin.
 

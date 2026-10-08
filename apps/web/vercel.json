@@ -1,0 +1,4 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "pnpm --filter @ormaro/db migrate && pnpm --filter @ormaro/db seed && next build"
+}
