@@ -14,7 +14,13 @@ if (!url) {
   process.exit(1);
 }
 
-const db = createDb(url);
+let db: ReturnType<typeof createDb>;
+try {
+  db = createDb(url);
+} catch (error) {
+  console.error((error as Error).message);
+  process.exit(1);
+}
 
 await db
   .insert(cities)
