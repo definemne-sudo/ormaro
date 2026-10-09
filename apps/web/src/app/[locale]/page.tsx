@@ -1,5 +1,5 @@
 import { getDb } from "@ormaro/db";
-import { categoryKeys, locales, type Locale } from "@ormaro/shared";
+import { categoryKeys, type Locale } from "@ormaro/shared";
 import { after } from "next/server";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SearchIcon } from "@/components/icons";
@@ -18,9 +18,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const items = getDb() ? await latestListings(locale as Locale, 24) : [];
   // Çevirisi eksik eski ilanlar sayfa gönderildikten sonra arka planda tamamlanır.
   if (getDb()) {
-    after(async () => {
-      for (const l of locales) await translateMissing(l, 5);
-    });
+    after(() => translateMissing());
   }
 
   return (

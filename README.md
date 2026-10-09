@@ -62,7 +62,8 @@ Not: Ücretsiz katman 30 günlük deneme kredisinden sonra ayda 1 $ kredi veriyo
 | `ADMIN_EMAILS` | Yönetim paneline girebilecek Google e-postaları, virgülle ayrılır. Bu kişiler bir sonraki girişlerinde yönetici olur |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | E-postayla kayıt ve şifre sıfırlama kodları için. Gmail: `smtp.gmail.com`, `465`, Gmail adresi ve Google hesabında oluşturulan 16 haneli uygulama şifresi |
 | `MAIL_FROM` | İsteğe bağlı gönderen, örn. `Ormaro <adres@gmail.com>` |
-| `GOOGLE_TRANSLATE_API_KEY` | İlanların alıcının diline çevrilmesi için. Google Cloud → Cloud Translation API'yi etkinleştir → Credentials → API key (yalnızca bu API'ye kısıtla). Ayda 500.000 karakter ücretsiz |
+| `GEMINI_API_KEY` | İlanların alıcının diline çevrilmesi için. aistudio.google.com → Get API key → Create API key. Kart istemez, ücretsiz kotayla çalışır |
+| `GEMINI_MODEL` | İsteğe bağlı; varsayılan `gemini-flash-lite-latest` |
 | `BUCKET_PATH_STYLE` | Yalnızca Railway path-style adres istiyorsa `1` |
 
 Google değişkenleri yoksa giriş sayfası "giriş henüz açılmadı" der; depo değişkenleri yoksa ilan verme kapalı kalır. Site yine de açılır.
