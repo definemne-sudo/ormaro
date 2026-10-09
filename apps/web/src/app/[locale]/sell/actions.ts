@@ -2,9 +2,11 @@
 
 import { listingInput, MAX_PHOTOS_PER_LISTING } from "@ormaro/shared";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { createListing } from "@/lib/listings";
 import { getActiveUser } from "@/lib/session";
 import { isValidPhotoKey } from "@/lib/storage";
+import { translateToAll } from "@/lib/translate";
 
 export type SellState = { error?: string; fields?: Record<string, string> };
 
@@ -63,5 +65,14 @@ export async function createListingAction(_prev: SellState, formData: FormData):
   }
 
   const id = await createListing({ sellerId: user.id, ...parsed.data, photoKeys });
+  // Diğer dillere çeviri yanıt gönderildikten sonra yapılır; satıcı beklemez.
+  after(() =>
+    translateToAll({
+      id,
+      title: parsed.data.title,
+      description: parsed.data.description,
+      language: parsed.data.language,
+    }),
+  );
   redirect(`/${locale}/listing/${id}`);
 }

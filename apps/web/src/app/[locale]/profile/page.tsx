@@ -1,3 +1,4 @@
+import type { Locale } from "@ormaro/shared";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { signOut } from "@/auth";
@@ -34,7 +35,9 @@ export default async function ProfilePage({
   const t = await getTranslations("profile");
   const [profile, active] = await Promise.all([getUser(user.id), getActiveUser()]);
   const items =
-    tab === "favorites" ? await favoriteListings(user.id) : await listingsBySeller(user.id, true);
+    tab === "favorites"
+      ? await favoriteListings(user.id, locale as Locale)
+      : await listingsBySeller(user.id, true, locale as Locale);
 
   async function logout() {
     "use server";

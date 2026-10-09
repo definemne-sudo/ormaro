@@ -1,5 +1,5 @@
 import { type Db, getDb, schema } from "@ormaro/db";
-import type { CategoryKey, Condition } from "@ormaro/shared";
+import type { CategoryKey, Condition, Locale } from "@ormaro/shared";
 import { and, asc, desc, eq, gte, inArray, lte, sql, type SQL } from "drizzle-orm";
 
 const { listings, listingPhotos, favorites, users } = schema;
@@ -28,20 +28,28 @@ const coverKey = sql<string | null>`(
   order by lp.position limit 1
 )`;
 
-const cardColumns = {
+/** Başlık alıcının dilinde; çevirisi yoksa ilanın kendi başlığı. */
+export function titleIn(locale: Locale) {
+  return sql<string>`coalesce((
+    select lt.title from listing_translations lt
+    where lt.listing_id = "listings"."id" and lt.locale = ${locale}::locale
+  ), "listings"."title")`;
+}
+
+const cardColumns = (locale: Locale) => ({
   id: listings.id,
-  title: listings.title,
+  title: titleIn(locale),
   priceEuro: listings.priceEuro,
   cityKey: listings.cityKey,
   condition: listings.condition,
   status: listings.status,
   createdAt: listings.createdAt,
   coverKey,
-};
+});
 
-export async function latestListings(limit = 20): Promise<ListingCard[]> {
+export async function latestListings(locale: Locale, limit = 20): Promise<ListingCard[]> {
   return db()
-    .select(cardColumns)
+    .select(cardColumns(locale))
     .from(listings)
     .where(eq(listings.status, "active"))
     .orderBy(desc(listings.createdAt))
@@ -72,12 +80,18 @@ export function toPrefixQuery(q: string): string | null {
   return words.map((w) => `${w}:*`).join(" & ");
 }
 
-export async function searchListings(f: SearchFilters, limit = 50): Promise<ListingCard[]> {
+export async function searchListings(f: SearchFilters, locale: Locale, limit = 50): Promise<ListingCard[]> {
   const where: SQL[] = [eq(listings.status, "active")];
   const tsquery = f.q ? toPrefixQuery(f.q) : null;
   if (tsquery) {
     where.push(
-      sql`to_tsvector('simple', ${listings.title} || ' ' || ${listings.description}) @@ to_tsquery('simple', ${tsquery})`,
+      // Asıl metinde ya da herhangi bir çevirisinde geçen kelimeyle bulunur.
+      sql`(to_tsvector('simple', ${listings.title} || ' ' || ${listings.description}) @@ to_tsquery('simple', ${tsquery})
+        or exists (
+          select 1 from listing_translations lt
+          where lt.listing_id = "listings"."id"
+            and to_tsvector('simple', lt.title || ' ' || lt.description) @@ to_tsquery('simple', ${tsquery})
+        ))`,
     );
   }
   if (f.category) where.push(eq(listings.categoryKey, f.category));
@@ -94,7 +108,7 @@ export async function searchListings(f: SearchFilters, limit = 50): Promise<List
         : [desc(listings.createdAt)];
 
   return db()
-    .select(cardColumns)
+    .select(cardColumns(locale))
     .from(listings)
     .where(and(...where))
     .orderBy(...order)
@@ -167,9 +181,9 @@ export async function setListingStatus(
     .where(and(eq(listings.id, id), eq(listings.sellerId, sellerId)));
 }
 
-export async function listingsBySeller(sellerId: string, includeHidden: boolean) {
+export async function listingsBySeller(sellerId: string, includeHidden: boolean, locale: Locale) {
   return db()
-    .select(cardColumns)
+    .select(cardColumns(locale))
     .from(listings)
     .where(
       includeHidden
@@ -199,7 +213,7 @@ export async function toggleFavorite(userId: string, listingId: string) {
   }
 }
 
-export async function favoriteListings(userId: string): Promise<ListingCard[]> {
+export async function favoriteListings(userId: string, locale: Locale): Promise<ListingCard[]> {
   const ids = await db()
     .select({ id: favorites.listingId })
     .from(favorites)
@@ -207,7 +221,7 @@ export async function favoriteListings(userId: string): Promise<ListingCard[]> {
     .orderBy(desc(favorites.createdAt));
   if (ids.length === 0) return [];
   const rows = await db()
-    .select(cardColumns)
+    .select(cardColumns(locale))
     .from(listings)
     .where(and(inArray(listings.id, ids.map((r) => r.id)), sql`${listings.status} <> 'removed'`));
   const order = new Map(ids.map((r, i) => [r.id, i]));

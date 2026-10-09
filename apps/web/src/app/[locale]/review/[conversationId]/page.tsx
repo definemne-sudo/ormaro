@@ -1,3 +1,4 @@
+import type { Locale } from "@ormaro/shared";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
@@ -24,7 +25,7 @@ export default async function ReviewPage({ params, searchParams }: Props) {
   const { locale, conversationId } = await params;
   setRequestLocale(locale);
   const user = await requireUser(locale, `/review/${conversationId}`);
-  const data = await getConversation(conversationId, user.id);
+  const data = await getConversation(conversationId, user.id, locale as Locale);
   if (!data) notFound();
   const t = await getTranslations("review");
   const { error } = await searchParams;

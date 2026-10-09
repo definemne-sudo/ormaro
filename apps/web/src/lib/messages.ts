@@ -1,6 +1,9 @@
 import { type Db, getDb, schema } from "@ormaro/db";
 import { aliasedTable, and, asc, count, desc, eq, isNull, ne, or, sql } from "drizzle-orm";
 
+import type { Locale } from "@ormaro/shared";
+import { titleIn } from "./listings";
+
 const { conversations, messages, listings, users } = schema;
 
 function db(): Db {
@@ -53,6 +56,7 @@ export type ConversationRow = {
 export async function listConversations(
   userId: string,
   filter: "all" | "buying" | "selling",
+  locale: Locale,
 ): Promise<ConversationRow[]> {
   const other = aliasedTable(users, "other");
   const who =
@@ -68,7 +72,7 @@ export async function listConversations(
       buyerId: conversations.buyerId,
       otherName: other.name,
       listingId: listings.id,
-      listingTitle: listings.title,
+      listingTitle: titleIn(locale),
       listingPrice: listings.priceEuro,
       listingStatus: listings.status,
       lastMessageAt: conversations.lastMessageAt,
@@ -110,7 +114,7 @@ export async function listConversations(
 }
 
 /** Sohbet ve mesajları; kullanıcı taraflardan biri değilse null. */
-export async function getConversation(id: string, userId: string) {
+export async function getConversation(id: string, userId: string, locale?: Locale) {
   if (!/^[0-9a-f-]{36}$/.test(id)) return null;
   const buyer = aliasedTable(users, "buyer");
   const seller = aliasedTable(users, "seller");
@@ -119,7 +123,7 @@ export async function getConversation(id: string, userId: string) {
       conversation: conversations,
       listing: {
         id: listings.id,
-        title: listings.title,
+        title: locale ? titleIn(locale) : listings.title,
         priceEuro: listings.priceEuro,
         status: listings.status,
       },

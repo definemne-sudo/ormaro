@@ -1,4 +1,5 @@
 import { getDb } from "@ormaro/db";
+import type { Locale } from "@ormaro/shared";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -29,9 +30,9 @@ export default async function UserPage({ params }: Props) {
   if (!u || u.bannedAt) notFound();
   const t = await getTranslations("user");
   const [items, summary, reviews, me] = await Promise.all([
-    listingsBySeller(id, false),
+    listingsBySeller(id, false, locale as Locale),
     ratingSummary(id),
-    reviewsAbout(id),
+    reviewsAbout(id, locale as Locale),
     getCurrentUser(),
   ]);
   const avg = summary.average !== null ? summary.average.toFixed(1).replace(".", locale === "en" ? "." : ",") : null;

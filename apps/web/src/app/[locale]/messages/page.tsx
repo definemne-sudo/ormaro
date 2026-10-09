@@ -1,3 +1,4 @@
+import type { Locale } from "@ormaro/shared";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ImageIcon } from "@/components/icons";
@@ -32,7 +33,7 @@ export default async function MessagesPage({
   const { tab: tabParam } = await searchParams;
   const tab = tabParam === "buying" || tabParam === "selling" ? tabParam : "all";
   const t = await getTranslations("chat");
-  const rows = await listConversations(user.id, tab);
+  const rows = await listConversations(user.id, tab, locale as Locale);
 
   const tabs = [
     { key: "all", label: t("tabs.all") },

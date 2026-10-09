@@ -60,6 +60,9 @@ Not: Ücretsiz katman 30 günlük deneme kredisinden sonra ayda 1 $ kredi veriyo
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | Google Cloud → Credentials → OAuth client ID (Web). Yönlendirme adresi: `https://<alan-adı>/api/auth/callback/google` |
 | `BUCKET_ENDPOINT`, `BUCKET_ACCESS_KEY_ID`, `BUCKET_SECRET_ACCESS_KEY`, `BUCKET_NAME`, `BUCKET_REGION` | Railway → Bucket → Credentials (`BUCKET_NAME` için görünen adı değil `BUCKET` değerini kullanın) |
 | `ADMIN_EMAILS` | Yönetim paneline girebilecek Google e-postaları, virgülle ayrılır. Bu kişiler bir sonraki girişlerinde yönetici olur |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | E-postayla kayıt ve şifre sıfırlama kodları için. Gmail: `smtp.gmail.com`, `465`, Gmail adresi ve Google hesabında oluşturulan 16 haneli uygulama şifresi |
+| `MAIL_FROM` | İsteğe bağlı gönderen, örn. `Ormaro <adres@gmail.com>` |
+| `GOOGLE_TRANSLATE_API_KEY` | İlanların alıcının diline çevrilmesi için. Google Cloud → Cloud Translation API'yi etkinleştir → Credentials → API key (yalnızca bu API'ye kısıtla). Ayda 500.000 karakter ücretsiz |
 | `BUCKET_PATH_STYLE` | Yalnızca Railway path-style adres istiyorsa `1` |
 
 Google değişkenleri yoksa giriş sayfası "giriş henüz açılmadı" der; depo değişkenleri yoksa ilan verme kapalı kalır. Site yine de açılır.

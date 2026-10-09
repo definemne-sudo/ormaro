@@ -35,6 +35,7 @@ export const reportReasonEnum = pgEnum("report_reason", [
   "wrong_category",
   "other",
 ]);
+export const emailCodePurposeEnum = pgEnum("email_code_purpose", ["register", "reset"]);
 export const reportStatusEnum = pgEnum("report_status", ["open", "reviewing", "closed"]);
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
@@ -61,8 +62,34 @@ export const users = pgTable("users", {
   role: userRoleEnum("role").notNull().default("user"),
   /** Yönetici tarafından engellendiyse dolu; engelli kullanıcı ilan veremez, mesaj gönderemez. */
   bannedAt: timestamp("banned_at", { withTimezone: true }),
+  /** E-posta ve şifreyle girişte kullanılır; yalnızca Google ile girenlerde boş. */
+  passwordHash: text("password_hash"),
+  emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
   createdAt: createdAt(),
 });
+
+/**
+ * E-postaya gönderilen 6 haneli kodlar (kayıt ve şifre sıfırlama).
+ * Kod doğrulanınca kısa ömürlü bir giriş bileti üretilir; oturum bu biletle açılır.
+ */
+export const emailCodes = pgTable(
+  "email_codes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email: text("email").notNull(),
+    purpose: emailCodePurposeEnum("purpose").notNull(),
+    codeHash: text("code_hash").notNull(),
+    name: text("name"),
+    passwordHash: text("password_hash"),
+    attempts: smallint("attempts").notNull().default(0),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    consumedAt: timestamp("consumed_at", { withTimezone: true }),
+    ticketHash: text("ticket_hash"),
+    ticketExpiresAt: timestamp("ticket_expires_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [index("email_codes_email_idx").on(t.email, t.createdAt)],
+);
 
 export const listings = pgTable(
   "listings",
@@ -98,6 +125,27 @@ export const listings = pgTable(
       sql`to_tsvector('simple', ${t.title} || ' ' || ${t.description})`,
     ),
     check("listings_price_check", sql`${t.priceEuro} >= 0`),
+  ],
+);
+
+/** İlanın diğer dillere otomatik çevirisi; ilanın kendi dili burada tutulmaz. */
+export const listingTranslations = pgTable(
+  "listing_translations",
+  {
+    listingId: uuid("listing_id")
+      .notNull()
+      .references(() => listings.id, { onDelete: "cascade" }),
+    locale: localeEnum("locale").notNull(),
+    title: text("title").notNull(),
+    description: text("description").notNull().default(""),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.listingId, t.locale] }),
+    index("listing_translations_search_idx").using(
+      "gin",
+      sql`to_tsvector('simple', ${t.title} || ' ' || ${t.description})`,
+    ),
   ],
 );
 

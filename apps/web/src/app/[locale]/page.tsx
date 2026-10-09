@@ -1,10 +1,12 @@
 import { getDb } from "@ormaro/db";
-import { categoryKeys } from "@ormaro/shared";
+import { categoryKeys, locales, type Locale } from "@ormaro/shared";
+import { after } from "next/server";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SearchIcon } from "@/components/icons";
 import { ListingGrid } from "@/components/ListingCards";
 import { Link } from "@/i18n/navigation";
 import { latestListings } from "@/lib/listings";
+import { translateMissing } from "@/lib/translate";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +15,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
   const t = await getTranslations("home");
   const tc = await getTranslations("categories");
-  const items = getDb() ? await latestListings(24) : [];
+  const items = getDb() ? await latestListings(locale as Locale, 24) : [];
+  // Çevirisi eksik eski ilanlar sayfa gönderildikten sonra arka planda tamamlanır.
+  if (getDb()) {
+    after(async () => {
+      for (const l of locales) await translateMissing(l, 5);
+    });
+  }
 
   return (
     <div className="flex flex-col gap-6 px-4 py-5">

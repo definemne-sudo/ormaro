@@ -73,7 +73,7 @@ export default async function SearchPage({
   const tc = await getTranslations("categories");
   const tcond = await getTranslations("conditions");
   const f = parseFilters(await searchParams);
-  const items = getDb() ? await searchListings(f) : [];
+  const items = getDb() ? await searchListings(f, locale as Locale) : [];
   const activeFilters = [f.category, f.city, f.condition, f.min, f.max].filter(
     (v) => v !== undefined,
   ).length;

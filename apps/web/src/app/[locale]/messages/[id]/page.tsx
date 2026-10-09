@@ -1,3 +1,4 @@
+import type { Locale } from "@ormaro/shared";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -27,7 +28,7 @@ export default async function ConversationPage({ params }: Props) {
   const { locale, id } = await params;
   setRequestLocale(locale);
   const user = await requireUser(locale, `/messages/${id}`);
-  const data = await getConversation(id, user.id);
+  const data = await getConversation(id, user.id, locale as Locale);
   if (!data) notFound();
   await markRead(id, user.id);
 

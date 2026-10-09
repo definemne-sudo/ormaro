@@ -2,6 +2,8 @@ import { getDb, schema } from "@ormaro/db";
 import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import { consumeTicket, findUserByEmail, isEmail, normalizeEmail } from "@/lib/emailAuth";
+import { verifyPassword } from "@/lib/password";
 
 declare module "next-auth" {
   interface Session {
@@ -44,7 +46,12 @@ async function upsertUser(input: { email: string; name?: string | null; image?: 
     })
     .onConflictDoUpdate({
       target: schema.users.email,
-      set: { avatarUrl: input.image ?? null, ...(admin ? { role: "admin" as const } : {}) },
+      set: {
+        email,
+        // Şifreyle girişte resim gelmez; Google'dan gelen resim silinmesin.
+        ...(input.image ? { avatarUrl: input.image } : {}),
+        ...(admin ? { role: "admin" as const } : {}),
+      },
     })
     .returning({ id: schema.users.id, role: schema.users.role, bannedAt: schema.users.bannedAt });
   if (!row) throw new Error("Kullanıcı kaydedilemedi.");
@@ -57,6 +64,33 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: { signIn: "/login", error: "/login" },
   providers: [
     ...(googleLoginEnabled ? [Google] : []),
+    Credentials({
+      id: "password",
+      name: "E-posta ve şifre",
+      credentials: { email: {}, password: {} },
+      authorize: async (credentials) => {
+        const email = normalizeEmail(String(credentials?.email ?? ""));
+        const password = String(credentials?.password ?? "");
+        if (!isEmail(email) || !password || password.length > 200) return null;
+        const user = await findUserByEmail(email);
+        if (!user?.passwordHash || !user.emailVerifiedAt) return null;
+        if (!(await verifyPassword(password, user.passwordHash))) return null;
+        return { email: user.email, name: user.name };
+      },
+    }),
+    Credentials({
+      // E-posta kodu doğrulandıktan sonra verilen tek kullanımlık biletle giriş.
+      id: "ticket",
+      name: "E-posta kodu",
+      credentials: { email: {}, ticket: {} },
+      authorize: async (credentials) => {
+        const email = normalizeEmail(String(credentials?.email ?? ""));
+        const ticket = String(credentials?.ticket ?? "");
+        if (!isEmail(email) || !ticket) return null;
+        const user = await consumeTicket(email, ticket);
+        return user ? { email: user.email, name: user.name } : null;
+      },
+    }),
     ...(devLoginEnabled
       ? [
           Credentials({

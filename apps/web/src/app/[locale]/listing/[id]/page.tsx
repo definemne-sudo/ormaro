@@ -10,22 +10,28 @@ import { getListing, isFavorite } from "@/lib/listings";
 import { ratingSummary } from "@/lib/reviews";
 import { getCurrentUser } from "@/lib/session";
 import { photoSrc } from "@/lib/storage";
+import { ensureTranslation, existingTranslation } from "@/lib/translate";
 import { Stars } from "@/components/Stars";
 import { startConversationAction } from "../../messages/actions";
 import { setStatusAction, toggleFavoriteAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-type Props = { params: Promise<{ locale: string; id: string }> };
+type Props = {
+  params: Promise<{ locale: string; id: string }>;
+  searchParams: Promise<{ original?: string }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { id, locale } = await params;
   if (!getDb()) return {};
   const data = await getListing(id);
-  return data ? { title: data.listing.title } : {};
+  if (!data) return {};
+  const tr = await existingTranslation(data.listing.id, locale as Locale);
+  return { title: tr?.title ?? data.listing.title };
 }
 
-export default async function ListingPage({ params }: Props) {
+export default async function ListingPage({ params, searchParams }: Props) {
   const { locale, id } = await params;
   setRequestLocale(locale);
   if (!getDb()) notFound();
@@ -45,6 +51,13 @@ export default async function ListingPage({ params }: Props) {
   const avg =
     rating.average !== null ? rating.average.toFixed(1).replace(".", locale === "en" ? "." : ",") : null;
   const loc = locale as Locale;
+  // İlan başka dilde yazıldıysa alıcının diline çevrilmiş hâli gösterilir; ilk görüntülemede çevrilir.
+  const translation = await ensureTranslation(listing, loc);
+  const showOriginal = (await searchParams).original === "1";
+  const shown = translation && !showOriginal ? translation : null;
+  const title = shown?.title ?? listing.title;
+  const description = shown ? shown.description : listing.description;
+  const textLang = shown ? (loc === "me" ? "cnr" : loc) : listing.language === "me" ? "cnr" : listing.language;
 
   return (
     <article className="flex flex-col bg-white">
@@ -81,7 +94,7 @@ export default async function ListingPage({ params }: Props) {
             <p className="text-[28px] leading-none font-bold tracking-tight">
               {formatPrice(listing.priceEuro, loc)}
             </p>
-            <h1 className="text-[19px] leading-snug font-semibold">{listing.title}</h1>
+            <h1 lang={textLang} className="text-[19px] leading-snug font-semibold">{title}</h1>
             <p className="text-sm text-muted">
               {cityName(listing.cityKey, loc)} · {formatRelative(listing.createdAt, loc)}
             </p>
@@ -108,19 +121,35 @@ export default async function ListingPage({ params }: Props) {
         <ul className="flex flex-wrap gap-2 text-[13px] font-semibold">
           <li className="rounded-full bg-surface px-3 py-1.5">{tcond(listing.condition)}</li>
           <li className="rounded-full bg-surface px-3 py-1.5">{tc(listing.categoryKey)}</li>
-          <li className="rounded-full bg-surface px-3 py-1.5">
-            {t("writtenIn", { language: localeNames[listing.language] })}
-          </li>
+          {!translation && (
+            <li className="rounded-full bg-surface px-3 py-1.5">
+              {t("writtenIn", { language: localeNames[listing.language] })}
+            </li>
+          )}
         </ul>
 
-        {listing.description && (
+        {translation && (
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-surface px-3 py-2 text-[13px] text-muted">
+            <span>
+              {showOriginal
+                ? t("originalShown", { language: localeNames[listing.language] })
+                : t("translatedFrom", { language: localeNames[listing.language] })}
+            </span>
+            <Link
+              href={showOriginal ? `/listing/${listing.id}` : { pathname: `/listing/${listing.id}`, query: { original: "1" } }}
+              replace
+              className="font-semibold text-brand-strong underline"
+            >
+              {showOriginal ? t("showTranslation") : t("showOriginal")}
+            </Link>
+          </p>
+        )}
+
+        {description && (
           <section className="flex flex-col gap-1.5">
             <h2 className="text-[15px] font-bold">{t("description")}</h2>
-            <p
-              lang={listing.language === "me" ? "cnr" : listing.language}
-              className="text-[15px] leading-relaxed whitespace-pre-line"
-            >
-              {listing.description}
+            <p lang={textLang} className="text-[15px] leading-relaxed whitespace-pre-line">
+              {description}
             </p>
           </section>
         )}
