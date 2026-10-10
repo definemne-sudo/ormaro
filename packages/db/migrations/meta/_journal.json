@@ -22,6 +22,13 @@
       "when": 1791530799186,
       "tag": "0002_auth_translations",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791662707297,
+      "tag": "0003_push",
+      "breakpoints": true
     }
   ]
 }

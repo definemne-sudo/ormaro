@@ -313,5 +313,33 @@
     "removeListing": "Remove listing",
     "ban": "Ban user",
     "unban": "Unban"
+  },
+  "app": {
+    "title": "App",
+    "installTitle": "Install on your phone",
+    "installBody": "Ormaro is added to your home screen and opens like an app.",
+    "install": "Add to home screen",
+    "installIos": "In Safari, tap the Share button (square with an up arrow), then choose “Add to Home Screen”.",
+    "installOther": "From your browser menu, choose “Install app” or “Add to home screen”.",
+    "notificationsTitle": "Notifications",
+    "push": {
+      "loading": "Checking…",
+      "unsupported": "This browser doesn't support notifications.",
+      "needsInstall": "On iPhone, first add Ormaro to your home screen, open it from there and turn on notifications here.",
+      "denied": "Notifications are blocked on this device. Allow them for Ormaro in your browser's site settings.",
+      "off": "Get a notification on your phone when a new message or offer arrives.",
+      "on": "Notifications are on for this device.",
+      "error": "Couldn't turn on notifications. Try again."
+    },
+    "enable": "Turn on notifications",
+    "disable": "Turn off notifications",
+    "enableShort": "Turn on",
+    "nudge": "Want a notification when they reply?",
+    "dismiss": "Dismiss"
+  },
+  "push": {
+    "offer": "New offer: {amount}",
+    "offerAccepted": "Accepted your {amount} offer",
+    "offerDeclined": "Declined your {amount} offer"
   }
 }

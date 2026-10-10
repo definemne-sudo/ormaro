@@ -172,7 +172,8 @@ export async function sendMessage(
   senderId: string,
   input: { kind: "text"; body: string } | { kind: "offer"; amount: number },
 ) {
-  if (!(await assertParticipant(conversationId, senderId))) return false;
+  const c = await assertParticipant(conversationId, senderId);
+  if (!c) return null;
   const now = new Date();
   await db().transaction(async (tx) => {
     if (input.kind === "offer") {
@@ -193,7 +194,8 @@ export async function sendMessage(
     });
     await tx.update(conversations).set({ lastMessageAt: now }).where(eq(conversations.id, conversationId));
   });
-  return true;
+  /** Bildirim gidecek karşı taraf. */
+  return { recipientId: c.buyerId === senderId ? c.sellerId : c.buyerId };
 }
 
 /** Teklife yalnızca teklifi alan taraf yanıt verebilir. */
@@ -203,6 +205,7 @@ export async function respondToOffer(messageId: string, userId: string, accept: 
       conversationId: messages.conversationId,
       senderId: messages.senderId,
       status: messages.offerStatus,
+      amount: messages.offerEuro,
     })
     .from(messages)
     .where(and(eq(messages.id, messageId), eq(messages.kind, "offer")))
@@ -217,7 +220,7 @@ export async function respondToOffer(messageId: string, userId: string, accept: 
     .update(conversations)
     .set({ lastMessageAt: new Date() })
     .where(eq(conversations.id, m.conversationId));
-  return m.conversationId;
+  return { conversationId: m.conversationId, offerSenderId: m.senderId, amount: m.amount ?? 0 };
 }
 
 export async function markRead(conversationId: string, userId: string) {

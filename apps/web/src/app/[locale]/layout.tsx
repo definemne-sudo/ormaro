@@ -7,6 +7,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { AppShell } from "@/components/AppShell";
+import { PwaRegister } from "@/components/Pwa";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -23,6 +24,9 @@ export async function generateMetadata({
   return {
     title: { default: t("title"), template: "%s · Ormaro" },
     description: t("description"),
+    applicationName: "Ormaro",
+    appleWebApp: { capable: true, title: "Ormaro", statusBarStyle: "default" },
+    icons: { apple: "/icons/apple-touch-icon.png" },
   };
 }
 
@@ -45,6 +49,7 @@ export default async function LocaleLayout({
     <html lang={htmlLang[locale as Locale]}>
       <body className="min-h-screen bg-surface antialiased">
         <NextIntlClientProvider>
+          <PwaRegister />
           <AppShell>{children}</AppShell>
         </NextIntlClientProvider>
       </body>

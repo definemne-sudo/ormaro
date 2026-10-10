@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { signOut } from "@/auth";
 import { ListingList } from "@/components/ListingCards";
+import { AppSettings } from "@/components/Pwa";
 import { Link } from "@/i18n/navigation";
 import { formatMonthYear } from "@/lib/format";
 import { favoriteListings, getUser, listingsBySeller } from "@/lib/listings";
@@ -95,6 +96,10 @@ export default async function ProfilePage({
           </Link>
         )}
       </section>
+
+      <div className="px-4 pb-3">
+        <AppSettings />
+      </div>
 
       <nav className="flex flex-col gap-2 px-4 pb-3">
         <Link

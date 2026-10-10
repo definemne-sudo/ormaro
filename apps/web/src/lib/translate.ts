@@ -169,7 +169,18 @@ export async function translateToAll(listing: ListingText) {
   const targets = locales.filter((l) => l !== listing.language && !have.has(l));
   if (targets.length === 0 || Date.now() < pausedUntil) return;
   try {
-    const result = useLlm ? await llm(listing, targets) : await myMemory(listing, targets);
+    let result: Partial<Record<Locale, Translated>>;
+    if (useLlm) {
+      try {
+        result = await llm(listing, targets);
+      } catch (e) {
+        // Yapay zekâ servisi kota ya da hata verirse anahtarsız servis yedek olarak kullanılır.
+        console.error("LLM çevirisi başarısız, MyMemory deneniyor", listing.id, e);
+        result = await myMemory(listing, targets);
+      }
+    } else {
+      result = await myMemory(listing, targets);
+    }
     const rows = Object.entries(result).map(([locale, v]) => ({
       listingId: listing.id,
       locale: locale as Locale,

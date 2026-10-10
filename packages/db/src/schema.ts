@@ -277,3 +277,21 @@ export const reports = pgTable(
     ),
   ],
 );
+
+/** Tarayıcı bildirim abonelikleri; bir kullanıcının her cihazı için bir satır. */
+export const pushSubscriptions = pgTable(
+  "push_subscriptions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    endpoint: text("endpoint").notNull().unique(),
+    p256dh: text("p256dh").notNull(),
+    auth: text("auth").notNull(),
+    /** Bildirim metinleri bu dilde yazılır. */
+    locale: localeEnum("locale").notNull().default("me"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("push_subscriptions_user_idx").on(t.userId)],
+);

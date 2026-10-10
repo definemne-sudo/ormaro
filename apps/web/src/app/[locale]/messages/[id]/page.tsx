@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { AutoRefresh } from "@/components/AutoRefresh";
+import { PushNudge } from "@/components/Pwa";
 import { BackIcon, ImageIcon } from "@/components/icons";
 import { Link } from "@/i18n/navigation";
 import { formatPrice, intlLocale } from "@/lib/format";
@@ -90,6 +91,7 @@ export default async function ConversationPage({ params }: Props) {
 
       <div className="flex flex-1 flex-col gap-2.5 px-4 py-4">
         <p className="mb-1 rounded-xl bg-brand-tint px-3 py-2 text-center text-[13px] text-brand-deep">{t("safety")}</p>
+        {messages.length > 0 && <PushNudge />}
 
         {accepted && (
           <div className="flex flex-col gap-2 rounded-xl border border-line bg-white p-3">

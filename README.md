@@ -65,6 +65,7 @@ Not: Ücretsiz katman 30 günlük deneme kredisinden sonra ayda 1 $ kredi veriyo
 | `LLM_API_KEY` | İsteğe bağlı, daha iyi çeviri için. console.groq.com → API Keys (kart istemez). Boşsa ilanlar anahtarsız MyMemory servisiyle çevrilir |
 | `MYMEMORY_EMAIL` | İsteğe bağlı; MyMemory'ye e-posta bildirmek günlük ücretsiz kotayı artırır |
 | `LLM_API_URL`, `LLM_MODEL` | İsteğe bağlı; Groq dışında OpenAI uyumlu başka bir servis ya da model için |
+| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | İsteğe bağlı. Bildirim anahtarları verilmezse `AUTH_SECRET`'tan türetilir; ayrıca ayar gerekmez |
 | `TRANSLATION` | `off` yazılırsa otomatik çeviri kapanır |
 | `BUCKET_PATH_STYLE` | Yalnızca Railway path-style adres istiyorsa `1` |
 

@@ -313,5 +313,33 @@
     "removeListing": "İlanı kaldır",
     "ban": "Kullanıcıyı engelle",
     "unban": "Engeli kaldır"
+  },
+  "app": {
+    "title": "Uygulama",
+    "installTitle": "Telefona yükle",
+    "installBody": "Ormaro ana ekranına eklenir ve uygulama gibi açılır.",
+    "install": "Ana ekrana ekle",
+    "installIos": "Safari'de alttaki Paylaş düğmesine (kare ve yukarı ok) dokun, sonra “Ana Ekrana Ekle”yi seç.",
+    "installOther": "Tarayıcının menüsünden “Uygulamayı yükle” ya da “Ana ekrana ekle”yi seç.",
+    "notificationsTitle": "Bildirimler",
+    "push": {
+      "loading": "Kontrol ediliyor…",
+      "unsupported": "Bu tarayıcı bildirimleri desteklemiyor.",
+      "needsInstall": "iPhone'da bildirim almak için önce Ormaro'yu ana ekrana ekle, sonra oradan açıp buradan bildirimleri aç.",
+      "denied": "Bildirimler bu cihazda engellenmiş. Açmak için tarayıcının site ayarlarından Ormaro'ya izin ver.",
+      "off": "Yeni mesaj ve teklif gelince telefonuna haber verelim.",
+      "on": "Bildirimler bu cihazda açık.",
+      "error": "Bildirimler açılamadı. Tekrar dene."
+    },
+    "enable": "Bildirimleri aç",
+    "disable": "Bildirimleri kapat",
+    "enableShort": "Aç",
+    "nudge": "Yanıt gelince haber verelim mi?",
+    "dismiss": "Kapat"
+  },
+  "push": {
+    "offer": "Yeni teklif: {amount}",
+    "offerAccepted": "{amount} teklifini kabul etti",
+    "offerDeclined": "{amount} teklifini reddetti"
   }
 }

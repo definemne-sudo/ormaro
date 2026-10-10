@@ -313,5 +313,33 @@
     "removeListing": "Ukloni oglas",
     "ban": "Blokiraj korisnika",
     "unban": "Odblokiraj"
+  },
+  "app": {
+    "title": "Aplikacija",
+    "installTitle": "Instaliraj na telefon",
+    "installBody": "Ormaro se dodaje na početni ekran i otvara se kao aplikacija.",
+    "install": "Dodaj na početni ekran",
+    "installIos": "U Safariju dodirni dugme Podijeli (kvadrat sa strelicom nagore), pa izaberi „Dodaj na početni ekran”.",
+    "installOther": "U meniju pregledača izaberi „Instaliraj aplikaciju” ili „Dodaj na početni ekran”.",
+    "notificationsTitle": "Obavještenja",
+    "push": {
+      "loading": "Provjeravamo…",
+      "unsupported": "Ovaj pregledač ne podržava obavještenja.",
+      "needsInstall": "Na iPhone-u prvo dodaj Ormaro na početni ekran, otvori ga odatle i ovdje uključi obavještenja.",
+      "denied": "Obavještenja su blokirana na ovom uređaju. Dozvoli ih za Ormaro u podešavanjima sajta u pregledaču.",
+      "off": "Obavijestićemo te na telefonu kad stigne nova poruka ili ponuda.",
+      "on": "Obavještenja su uključena na ovom uređaju.",
+      "error": "Uključivanje obavještenja nije uspjelo. Pokušaj ponovo."
+    },
+    "enable": "Uključi obavještenja",
+    "disable": "Isključi obavještenja",
+    "enableShort": "Uključi",
+    "nudge": "Da te obavijestimo kad stigne odgovor?",
+    "dismiss": "Zatvori"
+  },
+  "push": {
+    "offer": "Nova ponuda: {amount}",
+    "offerAccepted": "Prihvatio/la je tvoju ponudu od {amount}",
+    "offerDeclined": "Odbio/la je tvoju ponudu od {amount}"
   }
 }
