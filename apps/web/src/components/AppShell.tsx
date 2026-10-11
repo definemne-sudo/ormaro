@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 import { BottomNav } from "./BottomNav";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { InstallBanner } from "./Pwa";
 import { Logo } from "./Logo";
 import { UnreadBadge } from "./UnreadBadge";
 
@@ -18,6 +19,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </Suspense>
       </header>
       <main className="flex flex-1 flex-col">{children}</main>
+      <InstallBanner />
       <BottomNav
         messagesBadge={
           <Suspense>

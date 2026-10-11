@@ -335,7 +335,13 @@
     "disable": "Turn off notifications",
     "enableShort": "Turn on",
     "nudge": "Want a notification when they reply?",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "bannerTitle": "Install Ormaro on your phone",
+    "bannerBody": "Open it from your home screen with one tap and get notified about new messages.",
+    "bannerInstall": "Install",
+    "bannerLater": "Not now",
+    "bannerIos": "Tap the <share></share> Share button below, then choose <b>Add to Home Screen</b>.",
+    "shareIcon": "Share"
   },
   "push": {
     "offer": "New offer: {amount}",

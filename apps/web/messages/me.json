@@ -335,7 +335,13 @@
     "disable": "Isključi obavještenja",
     "enableShort": "Uključi",
     "nudge": "Da te obavijestimo kad stigne odgovor?",
-    "dismiss": "Zatvori"
+    "dismiss": "Zatvori",
+    "bannerTitle": "Instaliraj Ormaro na telefon",
+    "bannerBody": "Otvaraj ga jednim dodirom s početnog ekrana i primaj obavještenja o porukama.",
+    "bannerInstall": "Instaliraj",
+    "bannerLater": "Ne sada",
+    "bannerIos": "Dodirni dugme <share></share> Podijeli ispod, pa izaberi <b>Dodaj na početni ekran</b>.",
+    "shareIcon": "Podijeli"
   },
   "push": {
     "offer": "Nova ponuda: {amount}",

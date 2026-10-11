@@ -335,7 +335,13 @@
     "disable": "Bildirimleri kapat",
     "enableShort": "Aç",
     "nudge": "Yanıt gelince haber verelim mi?",
-    "dismiss": "Kapat"
+    "dismiss": "Kapat",
+    "bannerTitle": "Ormaro'yu telefonuna yükle",
+    "bannerBody": "Ana ekrandan tek dokunuşla aç, yeni mesajlardan haberdar ol.",
+    "bannerInstall": "Yükle",
+    "bannerLater": "Şimdi değil",
+    "bannerIos": "Alttaki <share></share> Paylaş düğmesine dokun, sonra <b>Ana Ekrana Ekle</b>'yi seç.",
+    "shareIcon": "Paylaş"
   },
   "push": {
     "offer": "Yeni teklif: {amount}",

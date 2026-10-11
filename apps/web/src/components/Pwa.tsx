@@ -246,3 +246,117 @@ export function PushNudge() {
     </div>
   );
 }
+
+const BANNER_KEY = "ormaro-install-dismissed";
+const BANNER_SNOOZE_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Sayfaya girildiğinde alttan çıkan "Uygulamayı yükle" önerisi.
+ * Yalnızca telefonda, uygulama henüz kurulu değilse ve kurulum mümkünse gösterilir.
+ * Kapatılırsa bir hafta boyunca tekrar çıkmaz.
+ */
+export function InstallBanner() {
+  const t = useTranslations("app");
+  const prompt = useInstallPrompt();
+  const [mode, setMode] = useState<"hidden" | "ios" | "prompt">("hidden");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (isStandalone()) return;
+    if (!window.matchMedia("(pointer: coarse)").matches) return;
+    try {
+      const at = Number(localStorage.getItem(BANNER_KEY) ?? 0);
+      if (at && Date.now() - at < BANNER_SNOOZE_MS) return;
+    } catch {}
+    // Sayfa açılır açılmaz değil, kullanıcı ekranı gördükten kısa süre sonra çıkar.
+    const timer = setTimeout(() => setReady(true), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
+    if (prompt) setMode("prompt");
+    else if (isIos()) setMode("ios");
+  }, [ready, prompt]);
+
+  function dismiss() {
+    setMode("hidden");
+    setReady(false);
+    try {
+      localStorage.setItem(BANNER_KEY, String(Date.now()));
+    } catch {}
+  }
+
+  async function install() {
+    if (!deferredPrompt) return;
+    await deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice.catch(() => null);
+    deferredPrompt = null;
+    emit();
+    if (choice?.outcome !== "accepted") dismiss();
+    else setMode("hidden");
+  }
+
+  if (mode === "hidden") return null;
+  return (
+    <div
+      role="dialog"
+      aria-labelledby="install-banner-title"
+      className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 px-3"
+    >
+      <div className="mx-auto flex max-w-3xl items-start gap-3 rounded-2xl border border-line bg-white p-3.5 shadow-[0_8px_30px_rgba(19,26,42,0.18)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icons/icon-192.png" alt="" width={44} height={44} className="h-11 w-11 flex-none rounded-xl" />
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <p id="install-banner-title" className="text-[15px] font-bold">
+            {t("bannerTitle")}
+          </p>
+          {mode === "prompt" ? (
+            <>
+              <p className="text-sm text-muted">{t("bannerBody")}</p>
+              <div className="mt-1.5 flex gap-2">
+                <button type="button" onClick={install} className="min-h-11 rounded-xl bg-brand px-4 text-sm font-bold text-ink">
+                  {t("bannerInstall")}
+                </button>
+                <button type="button" onClick={dismiss} className="min-h-11 rounded-xl px-3 text-sm font-semibold text-muted">
+                  {t("bannerLater")}
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="text-sm leading-relaxed text-muted">
+              {t.rich("bannerIos", {
+                share: () => (
+                  <svg
+                    className="mx-0.5 inline-block align-[-3px] text-[#0A84FF]"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    role="img"
+                    aria-label={t("shareIcon")}
+                  >
+                    <path d="M12 3v12M8 7l4-4 4 4M6 11v9h12v-9" />
+                  </svg>
+                ),
+                b: (chunks) => <strong className="font-semibold text-ink">{chunks}</strong>,
+              })}
+            </p>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={dismiss}
+          aria-label={t("dismiss")}
+          className="-mt-1 -mr-1 flex h-11 w-11 flex-none items-center justify-center text-xl text-muted"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+  );
+}
