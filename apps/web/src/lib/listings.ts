@@ -2,7 +2,7 @@ import { type Db, getDb, schema } from "@ormaro/db";
 import type { CategoryKey, Condition, Locale } from "@ormaro/shared";
 import { and, asc, desc, eq, gte, inArray, lte, sql, type SQL } from "drizzle-orm";
 
-const { listings, listingPhotos, favorites, users } = schema;
+const { listings, listingPhotos, listingTranslations, favorites, users } = schema;
 
 export type ListingCard = {
   id: string;
@@ -120,7 +120,7 @@ export async function getListing(id: string) {
   const [row] = await db()
     .select({
       listing: listings,
-      seller: { id: users.id, name: users.name, createdAt: users.createdAt },
+      seller: { id: users.id, name: users.name, avatarUrl: users.avatarUrl, createdAt: users.createdAt },
     })
     .from(listings)
     .innerJoin(users, eq(users.id, listings.sellerId))
@@ -167,6 +167,55 @@ export async function createListing(input: {
         .values(input.photoKeys.map((url, position) => ({ listingId: row.id, url, position })));
     }
     return row.id;
+  });
+}
+
+/**
+ * Satıcının kendi ilanını günceller. Fotoğraflar verilen sırayla yeniden yazılır.
+ * Başlık, açıklama ya da dil değiştiyse eski çeviriler silinir.
+ */
+export async function updateListing(
+  id: string,
+  sellerId: string,
+  input: {
+    title: string;
+    description: string;
+    priceEuro: number;
+    categoryKey: string;
+    cityKey: string;
+    condition: Condition;
+    language: Locale;
+    photoKeys: string[];
+  },
+): Promise<{ textChanged: boolean } | null> {
+  return db().transaction(async (tx) => {
+    const [current] = await tx
+      .select({ title: listings.title, description: listings.description, language: listings.language })
+      .from(listings)
+      .where(and(eq(listings.id, id), eq(listings.sellerId, sellerId)))
+      .limit(1);
+    if (!current) return null;
+    const textChanged =
+      current.title !== input.title || current.description !== input.description || current.language !== input.language;
+    await tx
+      .update(listings)
+      .set({
+        title: input.title,
+        description: input.description,
+        priceEuro: input.priceEuro,
+        categoryKey: input.categoryKey,
+        cityKey: input.cityKey,
+        condition: input.condition,
+        language: input.language,
+        updatedAt: new Date(),
+      })
+      .where(eq(listings.id, id));
+    await tx.delete(listingPhotos).where(eq(listingPhotos.listingId, id));
+    await tx
+      .insert(listingPhotos)
+      .values(input.photoKeys.map((url, position) => ({ listingId: id, url, position })));
+    if (textChanged) await tx.delete(listingTranslations).where(eq(listingTranslations.listingId, id));
+    return { textChanged };
   });
 }
 

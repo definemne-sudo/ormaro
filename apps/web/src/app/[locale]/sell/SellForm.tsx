@@ -4,43 +4,11 @@ import { MAX_PHOTOS_PER_LISTING } from "@ormaro/shared";
 import { useTranslations } from "next-intl";
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { CameraIcon, CloseIcon } from "@/components/icons";
-import { createListingAction, type SellState } from "./actions";
+import { compress, upload } from "@/lib/imageUpload";
+import { createListingAction, type SellState, updateListingAction } from "./actions";
 
 type Option = { value: string; label: string };
 type Photo = { id: string; preview: string; key?: string; status: "uploading" | "done" | "error" };
-
-const MAX_SIDE = 1600;
-
-/** Fotoğrafı telefonda küçültür: en uzun kenar 1600 px, WebP (desteklenmiyorsa JPEG). */
-async function compress(file: File): Promise<Blob> {
-  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
-  const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(bitmap.width * scale);
-  canvas.height = Math.round(bitmap.height * scale);
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("canvas");
-  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  bitmap.close();
-  const toBlob = (type: string, quality: number) =>
-    new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, type, quality));
-  const webp = await toBlob("image/webp", 0.8);
-  // Bazı tarayıcılar WebP üretemez ve sessizce PNG döner; o durumda JPEG'e geçilir.
-  if (webp && webp.type === "image/webp") return webp;
-  const jpeg = await toBlob("image/jpeg", 0.82);
-  if (!jpeg) throw new Error("encode");
-  return jpeg;
-}
-
-async function upload(blob: Blob): Promise<string> {
-  const body = new FormData();
-  body.append("file", blob, blob.type === "image/webp" ? "photo.webp" : "photo.jpg");
-  const res = await fetch("/api/uploads", { method: "POST", body });
-  if (!res.ok) throw new Error(`upload ${res.status}`);
-  const data = (await res.json()) as { key?: string };
-  if (!data.key) throw new Error("upload");
-  return data.key;
-}
 
 const field =
   "h-12 w-full rounded-xl border border-field bg-white px-3.5 text-[15px] text-ink focus:border-brand-strong focus:outline-none";
@@ -53,14 +21,22 @@ export function SellForm(props: {
   conditions: Option[];
   cities: Option[];
   languages: Option[];
+  /** Düzenleme modunda ilanın mevcut değerleri ve fotoğrafları. */
+  edit?: { listingId: string; values: Record<string, string>; photos: { key: string; src: string }[] };
 }) {
   const t = useTranslations("sell");
-  const [state, formAction, pending] = useActionState<SellState, FormData>(createListingAction, {});
-  const [photos, setPhotos] = useState<Photo[]>([]);
+  const editing = Boolean(props.edit);
+  const [state, formAction, pending] = useActionState<SellState, FormData>(
+    editing ? updateListingAction : createListingAction,
+    {},
+  );
+  const [photos, setPhotos] = useState<Photo[]>(() =>
+    (props.edit?.photos ?? []).map((p) => ({ id: p.key, preview: p.src, key: p.key, status: "done" as const })),
+  );
   const [uploadError, setUploadError] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
   const errorRef = useRef<HTMLParagraphElement>(null);
-  const f = state.fields ?? {};
+  const f = state.fields ?? props.edit?.values ?? {};
 
   useEffect(() => {
     if (state.error) errorRef.current?.focus();
@@ -95,8 +71,15 @@ export function SellForm(props: {
   function removePhoto(id: string) {
     setPhotos((p) => {
       const gone = p.find((x) => x.id === id);
-      if (gone) URL.revokeObjectURL(gone.preview);
+      if (gone?.preview.startsWith("blob:")) URL.revokeObjectURL(gone.preview);
       return p.filter((x) => x.id !== id);
+    });
+  }
+
+  function makeCover(id: string) {
+    setPhotos((p) => {
+      const chosen = p.find((x) => x.id === id);
+      return chosen ? [chosen, ...p.filter((x) => x.id !== id)] : p;
     });
   }
 
@@ -114,8 +97,9 @@ export function SellForm(props: {
       }}
       className="flex flex-col gap-5 bg-white px-4 py-5"
     >
-      <h1 className="text-xl font-bold">{t("title")}</h1>
+      <h1 className="text-xl font-bold">{editing ? t("editTitle") : t("title")}</h1>
       <input type="hidden" name="locale" value={props.locale} />
+      {props.edit && <input type="hidden" name="listingId" value={props.edit.listingId} />}
       <input type="hidden" name="photos" value={JSON.stringify(keys)} />
 
       {state.error && (
@@ -160,6 +144,15 @@ export function SellForm(props: {
                 <span className="absolute top-1 left-1 rounded bg-ink/75 px-1.5 text-[11px] font-semibold text-white">
                   {t("cover")}
                 </span>
+              )}
+              {i > 0 && p.status === "done" && (
+                <button
+                  type="button"
+                  onClick={() => makeCover(p.id)}
+                  className="absolute inset-x-0 bottom-0 bg-ink/70 py-1 text-center text-[11px] font-semibold text-white"
+                >
+                  {t("makeCover")}
+                </button>
               )}
               <button
                 type="button"
@@ -301,7 +294,7 @@ export function SellForm(props: {
         disabled={pending || uploading}
         className="min-h-13 rounded-xl bg-brand text-base font-bold text-ink disabled:opacity-60"
       >
-        {pending ? t("submitting") : uploading ? t("waitUploads") : t("submit")}
+        {pending ? t("submitting") : uploading ? t("waitUploads") : editing ? t("save") : t("submit")}
       </button>
     </form>
   );

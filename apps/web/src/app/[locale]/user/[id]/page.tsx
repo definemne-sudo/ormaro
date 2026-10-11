@@ -4,7 +4,10 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ListingGrid } from "@/components/ListingCards";
+import { BlockControl } from "@/components/BlockControl";
 import { Stars } from "@/components/Stars";
+import { blockState } from "@/lib/blocks";
+import { Avatar } from "@/components/Avatar";
 import { Link } from "@/i18n/navigation";
 import { formatMonthYear, formatRelative } from "@/lib/format";
 import { getUser, listingsBySeller } from "@/lib/listings";
@@ -41,9 +44,7 @@ export default async function UserPage({ params }: Props) {
     <div className="flex flex-col">
       <section className="flex flex-col gap-3 border-b border-line bg-white px-4 py-4">
         <div className="flex items-center gap-3.5">
-          <span className="flex h-16 w-16 flex-none items-center justify-center rounded-full bg-brand-tint text-2xl font-bold text-brand-deep">
-            {(u.name ?? "?").slice(0, 1).toUpperCase()}
-          </span>
+          <Avatar name={u.name} url={u.avatarUrl} size={64} />
           <div className="flex min-w-0 flex-col gap-0.5">
             <h1 className="truncate text-xl font-bold">{u.name ?? t("someone")}</h1>
             <p className="text-sm text-muted">{t("memberSince", { date: formatMonthYear(u.createdAt, locale) })}</p>
@@ -58,12 +59,21 @@ export default async function UserPage({ params }: Props) {
           </div>
         </div>
         {me && me.id !== u.id && (
-          <Link
-            href={{ pathname: "/report", query: { user: u.id } }}
-            className="self-start text-sm font-semibold text-muted underline"
-          >
-            {t("report")}
-          </Link>
+          <div className="flex flex-wrap items-start gap-x-5">
+            <Link
+              href={{ pathname: "/report", query: { user: u.id } }}
+              className="flex min-h-11 items-center text-sm font-semibold text-muted underline"
+            >
+              {t("report")}
+            </Link>
+            <BlockControl
+              locale={locale}
+              userId={u.id}
+              name={u.name ?? t("someone")}
+              blocked={(await blockState(me.id, u.id)) === "iBlocked"}
+              back={`/${locale}/user/${u.id}`}
+            />
+          </div>
         )}
       </section>
 
@@ -83,7 +93,10 @@ export default async function UserPage({ params }: Props) {
             {reviews.map((r) => (
               <li key={r.id} className="flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-bold">{r.authorName ?? t("someone")}</span>
+                  <span className="flex min-w-0 items-center gap-2">
+                    <Avatar name={r.authorName} url={r.authorAvatar} size={28} />
+                    <span className="truncate font-bold">{r.authorName ?? t("someone")}</span>
+                  </span>
                   <Stars value={r.rating} size={14} label={`${r.rating} / 5`} />
                 </div>
                 {r.comment && <p className="text-[15px] leading-relaxed whitespace-pre-line">{r.comment}</p>}

@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { signOut } from "@/auth";
 import { ListingList } from "@/components/ListingCards";
 import { AppSettings } from "@/components/Pwa";
+import { Avatar } from "@/components/Avatar";
 import { Link } from "@/i18n/navigation";
 import { formatMonthYear } from "@/lib/format";
 import { favoriteListings, getUser, listingsBySeller } from "@/lib/listings";
@@ -53,9 +54,7 @@ export default async function ProfilePage({
     <div className="flex flex-col">
       <section className="flex flex-col gap-4 border-b border-line bg-white px-4 py-4">
         <div className="flex items-center gap-3.5">
-          <span className="flex h-16 w-16 flex-none items-center justify-center rounded-full bg-brand-tint text-2xl font-bold text-brand-deep">
-            {(profile?.name ?? user.email ?? "?").slice(0, 1).toUpperCase()}
-          </span>
+          <Avatar name={profile?.name ?? user.email} url={profile?.avatarUrl} size={64} />
           <div className="flex min-w-0 flex-col gap-0.5">
             <h1 className="truncate text-xl font-bold">{profile?.name ?? user.email}</h1>
             {profile && (
@@ -102,6 +101,18 @@ export default async function ProfilePage({
       </div>
 
       <nav className="flex flex-col gap-2 px-4 pb-3">
+        <Link
+          href="/profile/edit"
+          className="flex min-h-12 items-center justify-center rounded-xl border border-field bg-white font-semibold"
+        >
+          {t("edit")}
+        </Link>
+        <Link
+          href="/profile/blocked"
+          className="flex min-h-12 items-center justify-center rounded-xl border border-field bg-white font-semibold"
+        >
+          {t("blocked")}
+        </Link>
         <Link
           href={`/user/${user.id}`}
           className="flex min-h-12 items-center justify-center rounded-xl border border-field bg-white font-semibold"

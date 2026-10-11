@@ -73,7 +73,10 @@
     "translatedFrom": "Automatically translated · Original language: {language}",
     "originalShown": "Original text ({language})",
     "showOriginal": "Show original",
-    "showTranslation": "Show translation"
+    "showTranslation": "Show translation",
+    "edit": "Edit listing",
+    "youBlockedSeller": "You've blocked this seller. Unblock them from their profile to send a message.",
+    "cantMessage": "You can't message this seller."
   },
   "sell": {
     "title": "Sell something",
@@ -110,7 +113,10 @@
       "categoryRequired": "Choose a category.",
       "conditionRequired": "Choose the item's condition.",
       "generic": "Something went wrong. Please try again."
-    }
+    },
+    "editTitle": "Edit listing",
+    "save": "Save changes",
+    "makeCover": "Make cover"
   },
   "profile": {
     "title": "Profile",
@@ -122,7 +128,9 @@
     "newListing": "Post a new listing",
     "logout": "Log out",
     "publicProfile": "My public profile",
-    "admin": "Admin panel"
+    "admin": "Admin panel",
+    "edit": "Edit profile",
+    "blocked": "Blocked people"
   },
   "login": {
     "title": "Sign in",
@@ -242,7 +250,8 @@
     "sendOffer": "Send offer",
     "offer": "Make an offer",
     "placeholder": "Write a message",
-    "send": "Send"
+    "send": "Send",
+    "options": "Options"
   },
   "user": {
     "someone": "A user",
@@ -347,5 +356,40 @@
     "offer": "New offer: {amount}",
     "offerAccepted": "Accepted your {amount} offer",
     "offerDeclined": "Declined your {amount} offer"
+  },
+  "profileEdit": {
+    "title": "Edit profile",
+    "photoAlt": "Your profile photo",
+    "addPhoto": "Add photo",
+    "changePhoto": "Change photo",
+    "removePhoto": "Remove photo",
+    "uploading": "Uploading…",
+    "name": "Your name",
+    "nameHint": "Buyers and sellers see you by this name.",
+    "city": "Your city",
+    "optional": "(optional)",
+    "noCity": "Not set",
+    "cityHint": "Pre-selected as the city when you post a listing.",
+    "save": "Save",
+    "saving": "Saving…",
+    "errors": {
+      "name": "Name must be 2 to 60 characters.",
+      "photo": "Couldn't upload the photo. Try another one.",
+      "generic": "Couldn't save. Try again."
+    }
+  },
+  "block": {
+    "block": "Block this user",
+    "unblock": "Unblock",
+    "blockName": "Block {name}",
+    "hint": "People you block can't send you messages or offers, and you can't message them.",
+    "confirm": "Block {name}? Neither of you will be able to send messages or offers. You can unblock at any time.",
+    "confirmButton": "Block",
+    "youBlocked": "You've blocked this person.",
+    "cantReply": "This conversation can no longer be replied to.",
+    "listTitle": "Blocked people",
+    "listHint": "These people can't send you messages or offers, and your conversations with them are hidden.",
+    "listEmpty": "You haven't blocked anyone.",
+    "someone": "A user"
   }
 }

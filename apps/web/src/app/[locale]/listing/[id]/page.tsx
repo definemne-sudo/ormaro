@@ -4,9 +4,11 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { HeartIcon, ImageIcon } from "@/components/icons";
+import { Avatar } from "@/components/Avatar";
 import { Link } from "@/i18n/navigation";
 import { formatMonthYear, formatPrice, formatRelative } from "@/lib/format";
 import { getListing, isFavorite } from "@/lib/listings";
+import { blockState } from "@/lib/blocks";
 import { ratingSummary } from "@/lib/reviews";
 import { getCurrentUser } from "@/lib/session";
 import { photoSrc } from "@/lib/storage";
@@ -44,9 +46,10 @@ export default async function ListingPage({ params, searchParams }: Props) {
   const tc = await getTranslations("categories");
   const tcond = await getTranslations("conditions");
   const { listing, seller, photos } = data;
-  const [fav, rating] = await Promise.all([
+  const [fav, rating, block] = await Promise.all([
     user ? isFavorite(user.id, listing.id) : Promise.resolve(false),
     ratingSummary(seller.id),
+    user && !isOwner ? blockState(user.id, seller.id) : Promise.resolve("none" as const),
   ]);
   const avg =
     rating.average !== null ? rating.average.toFixed(1).replace(".", locale === "en" ? "." : ",") : null;
@@ -158,9 +161,7 @@ export default async function ListingPage({ params, searchParams }: Props) {
           href={`/user/${seller.id}`}
           className="flex items-center gap-3 rounded-2xl border border-line p-3"
         >
-          <span className="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-brand-tint text-lg font-bold text-brand-deep">
-            {(seller.name ?? "?").slice(0, 1).toUpperCase()}
-          </span>
+          <Avatar name={seller.name} url={seller.avatarUrl} size={48} />
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="text-[15px] font-bold">{seller.name ?? t("anonymous")}</span>
             {avg ? (
@@ -181,6 +182,12 @@ export default async function ListingPage({ params, searchParams }: Props) {
           <section className="flex flex-col gap-2">
             <h2 className="text-[15px] font-bold">{t("ownerTitle")}</h2>
             <Link
+              href={`/listing/${listing.id}/edit`}
+              className="flex min-h-12 items-center justify-center rounded-xl border border-field bg-white font-bold text-ink"
+            >
+              {t("edit")}
+            </Link>
+            <Link
               href={{ pathname: "/messages", query: { tab: "selling" } }}
               className="flex min-h-12 items-center justify-center rounded-xl border border-field font-bold"
             >
@@ -199,7 +206,12 @@ export default async function ListingPage({ params, searchParams }: Props) {
           </section>
         ) : (
           <section className="flex flex-col gap-3">
-            {listing.status === "active" && (
+            {listing.status === "active" && block !== "none" && (
+              <p className="rounded-xl bg-surface p-3 text-center text-sm text-muted">
+                {block === "iBlocked" ? t("youBlockedSeller") : t("cantMessage")}
+              </p>
+            )}
+            {listing.status === "active" && block === "none" && (
               <form action={startConversationAction}>
                 <input type="hidden" name="listingId" value={listing.id} />
                 <input type="hidden" name="locale" value={locale} />

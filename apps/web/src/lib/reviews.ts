@@ -29,6 +29,7 @@ export async function reviewsAbout(userId: string, locale: Locale, limit = 20) {
       comment: reviews.comment,
       createdAt: reviews.createdAt,
       authorName: users.name,
+      authorAvatar: users.avatarUrl,
       listingTitle: titleIn(locale),
     })
     .from(reviews)

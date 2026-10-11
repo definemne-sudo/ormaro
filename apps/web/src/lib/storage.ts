@@ -9,7 +9,7 @@ import { devLoginEnabled } from "@/auth";
  * Yalnızca yerel denemede (ALLOW_DEV_LOGIN=1 ve depo ayarsız) dosyalar diske yazılır.
  */
 
-const PHOTO_KEY = /^listings\/[0-9a-f-]{36}\/[0-9a-f-]{36}\.(webp|jpg)$/;
+const PHOTO_KEY = /^(listings|avatars)\/[0-9a-f-]{36}\/[0-9a-f-]{36}\.(webp|jpg)$/;
 
 export function isValidPhotoKey(key: string): boolean {
   return PHOTO_KEY.test(key);

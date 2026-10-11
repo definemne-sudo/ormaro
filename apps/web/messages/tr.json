@@ -73,7 +73,10 @@
     "translatedFrom": "Otomatik çeviri · İlanın dili: {language}",
     "originalShown": "İlanın asıl metni ({language})",
     "showOriginal": "Aslını göster",
-    "showTranslation": "Çeviriyi göster"
+    "showTranslation": "Çeviriyi göster",
+    "edit": "İlanı düzenle",
+    "youBlockedSeller": "Bu satıcıyı engelledin. Mesaj göndermek için önce profilinden engeli kaldır.",
+    "cantMessage": "Bu satıcıya mesaj gönderemezsin."
   },
   "sell": {
     "title": "İlan ver",
@@ -110,7 +113,10 @@
       "categoryRequired": "Kategori seç.",
       "conditionRequired": "Ürünün durumunu seç.",
       "generic": "Bir şeyler ters gitti. Tekrar dene."
-    }
+    },
+    "editTitle": "İlanı düzenle",
+    "save": "Değişiklikleri kaydet",
+    "makeCover": "Kapak yap"
   },
   "profile": {
     "title": "Profil",
@@ -122,7 +128,9 @@
     "newListing": "Yeni ilan ver",
     "logout": "Çıkış yap",
     "publicProfile": "Herkese açık profilim",
-    "admin": "Yönetim paneli"
+    "admin": "Yönetim paneli",
+    "edit": "Profili düzenle",
+    "blocked": "Engellediğim kişiler"
   },
   "login": {
     "title": "Giriş yap",
@@ -242,7 +250,8 @@
     "sendOffer": "Teklifi gönder",
     "offer": "Teklif ver",
     "placeholder": "Mesaj yaz",
-    "send": "Gönder"
+    "send": "Gönder",
+    "options": "Seçenekler"
   },
   "user": {
     "someone": "Bir kullanıcı",
@@ -347,5 +356,40 @@
     "offer": "Yeni teklif: {amount}",
     "offerAccepted": "{amount} teklifini kabul etti",
     "offerDeclined": "{amount} teklifini reddetti"
+  },
+  "profileEdit": {
+    "title": "Profili düzenle",
+    "photoAlt": "Profil fotoğrafın",
+    "addPhoto": "Fotoğraf ekle",
+    "changePhoto": "Fotoğrafı değiştir",
+    "removePhoto": "Fotoğrafı kaldır",
+    "uploading": "Yükleniyor…",
+    "name": "Adın",
+    "nameHint": "Alıcılar ve satıcılar seni bu adla görür.",
+    "city": "Şehrin",
+    "optional": "(isteğe bağlı)",
+    "noCity": "Seçilmedi",
+    "cityHint": "Yeni ilan verirken şehir olarak önceden seçilir.",
+    "save": "Kaydet",
+    "saving": "Kaydediliyor…",
+    "errors": {
+      "name": "Ad 2 ile 60 karakter arasında olmalı.",
+      "photo": "Fotoğraf yüklenemedi. Başka bir fotoğraf dene.",
+      "generic": "Kaydedilemedi. Tekrar dene."
+    }
+  },
+  "block": {
+    "block": "Bu kullanıcıyı engelle",
+    "unblock": "Engeli kaldır",
+    "blockName": "{name} adlı kişiyi engelle",
+    "hint": "Engellediğin kişi sana mesaj ve teklif gönderemez, sen de ona yazamazsın.",
+    "confirm": "{name} engellensin mi? Birbirinize mesaj ve teklif gönderemezsiniz. Engeli istediğin zaman kaldırabilirsin.",
+    "confirmButton": "Engelle",
+    "youBlocked": "Bu kişiyi engelledin.",
+    "cantReply": "Bu konuşmaya artık yanıt verilemiyor.",
+    "listTitle": "Engellediğim kişiler",
+    "listHint": "Bu kişiler sana mesaj ve teklif gönderemez; onlarla olan konuşmalar listende görünmez.",
+    "listEmpty": "Kimseyi engellemedin.",
+    "someone": "Bir kullanıcı"
   }
 }

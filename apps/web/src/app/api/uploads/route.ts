@@ -33,7 +33,9 @@ export async function POST(request: Request) {
     return Response.json({ error: "too_large" }, { status: 413 });
   }
 
-  const key = `listings/${user.id}/${randomUUID()}.${ext}`;
+  // Profil fotoğrafları ayrı klasöre yazılır; ilan formu bunları kabul etmez.
+  const folder = form?.get("kind") === "avatar" ? "avatars" : "listings";
+  const key = `${folder}/${user.id}/${randomUUID()}.${ext}`;
   await putPhoto(key, new Uint8Array(await file.arrayBuffer()), file.type);
   return Response.json({ key });
 }

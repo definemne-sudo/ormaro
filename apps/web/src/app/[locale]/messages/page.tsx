@@ -2,6 +2,7 @@ import type { Locale } from "@ormaro/shared";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ImageIcon } from "@/components/icons";
+import { Avatar } from "@/components/Avatar";
 import { Link } from "@/i18n/navigation";
 import { formatPrice, formatRelative } from "@/lib/format";
 import { listConversations } from "@/lib/messages";
@@ -74,14 +75,22 @@ export default async function MessagesPage({
             return (
               <li key={r.id} className="border-b border-line">
                 <Link href={`/messages/${r.id}`} className="flex items-center gap-3 px-4 py-3.5">
-                  {r.coverKey ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={photoSrc(r.coverKey)} alt="" className="h-13 w-13 flex-none rounded-xl object-cover" />
-                  ) : (
-                    <span className="flex h-13 w-13 flex-none items-center justify-center rounded-xl bg-placeholder text-muted">
-                      <ImageIcon width={22} height={22} />
-                    </span>
-                  )}
+                  <span className="relative flex-none">
+                    {r.coverKey ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={photoSrc(r.coverKey)} alt="" className="h-13 w-13 rounded-xl object-cover" />
+                    ) : (
+                      <span className="flex h-13 w-13 items-center justify-center rounded-xl bg-placeholder text-muted">
+                        <ImageIcon width={22} height={22} />
+                      </span>
+                    )}
+                    <Avatar
+                      name={r.otherName}
+                      url={r.otherAvatar}
+                      size={24}
+                      className="absolute -right-1.5 -bottom-1.5 ring-2 ring-white"
+                    />
+                  </span>
                   <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                     <span className="flex items-baseline justify-between gap-2">
                       <span className="truncate text-[15px] font-bold">{r.otherName ?? t("someone")}</span>

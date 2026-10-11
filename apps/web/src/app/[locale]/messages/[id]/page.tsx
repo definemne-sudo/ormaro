@@ -3,8 +3,11 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { AutoRefresh } from "@/components/AutoRefresh";
+import { BlockControl } from "@/components/BlockControl";
 import { PushNudge } from "@/components/Pwa";
+import { blockState } from "@/lib/blocks";
 import { BackIcon, ImageIcon } from "@/components/icons";
+import { Avatar } from "@/components/Avatar";
 import { Link } from "@/i18n/navigation";
 import { formatPrice, intlLocale } from "@/lib/format";
 import { bothParticipated, getConversation, markRead } from "@/lib/messages";
@@ -12,6 +15,7 @@ import { existingReview } from "@/lib/reviews";
 import { requireUser } from "@/lib/session";
 import { photoSrc } from "@/lib/storage";
 import { setStatusAction } from "../../listing/[id]/actions";
+import { blockAction } from "../../profile/actions";
 import { respondOfferAction } from "../actions";
 import { Composer } from "./Composer";
 
@@ -34,7 +38,9 @@ export default async function ConversationPage({ params }: Props) {
   await markRead(id, user.id);
 
   const t = await getTranslations("chat");
+  const tb = await getTranslations("block");
   const { listing, other, role, messages, conversation } = data;
+  const block = await blockState(user.id, other.id);
   const accepted = messages.find((m) => m.offerStatus === "accepted");
   const canReview =
     bothParticipated(messages, conversation.buyerId, conversation.sellerId) &&
@@ -53,20 +59,42 @@ export default async function ConversationPage({ params }: Props) {
             <BackIcon width={22} height={22} />
           </Link>
           <Link href={`/user/${other.id}`} className="flex min-w-0 flex-1 items-center gap-2.5">
-            <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-brand-tint font-bold text-brand-deep">
-              {(other.name ?? "?").slice(0, 1).toUpperCase()}
-            </span>
+            <Avatar name={other.name} url={other.avatarUrl} size={40} />
             <span className="flex min-w-0 flex-col">
               <span className="truncate font-bold">{other.name ?? t("someone")}</span>
               <span className="text-xs text-muted">{role === "buyer" ? t("roleSeller") : t("roleBuyer")}</span>
             </span>
           </Link>
-          <Link
-            href={{ pathname: "/report", query: { user: other.id } }}
-            className="flex min-h-11 items-center text-sm font-semibold text-muted"
-          >
-            {t("report")}
-          </Link>
+          <details className="relative">
+            <summary
+              aria-label={t("options")}
+              className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-full text-xl font-bold text-muted [&::-webkit-details-marker]:hidden"
+            >
+              ⋯
+            </summary>
+            <div className="absolute top-12 right-0 z-20 flex w-64 flex-col gap-1 rounded-2xl border border-line bg-white p-2 shadow-[0_8px_30px_rgba(19,26,42,0.16)]">
+              <Link
+                href={{ pathname: "/report", query: { user: other.id } }}
+                className="flex min-h-11 items-center rounded-xl px-3 text-[15px] font-semibold"
+              >
+                {t("report")}
+              </Link>
+              {block !== "iBlocked" && (
+                <form action={blockAction} className="flex flex-col gap-1 border-t border-line pt-2">
+                  <input type="hidden" name="locale" value={locale} />
+                  <input type="hidden" name="userId" value={other.id} />
+                  <input type="hidden" name="back" value={`/${locale}/messages/${conversation.id}`} />
+                  <p className="px-3 text-[13px] text-muted">{tb("hint")}</p>
+                  <button
+                    type="submit"
+                    className="flex min-h-11 items-center rounded-xl px-3 text-left text-[15px] font-bold text-[#9A2B12]"
+                  >
+                    {tb("blockName", { name: other.name ?? t("someone") })}
+                  </button>
+                </form>
+              )}
+            </div>
+          </details>
         </div>
         <Link href={`/listing/${listing.id}`} className="flex items-center gap-3 border-t border-line px-4 py-2.5">
           {data.coverKey ? (
@@ -91,7 +119,7 @@ export default async function ConversationPage({ params }: Props) {
 
       <div className="flex flex-1 flex-col gap-2.5 px-4 py-4">
         <p className="mb-1 rounded-xl bg-brand-tint px-3 py-2 text-center text-[13px] text-brand-deep">{t("safety")}</p>
-        {messages.length > 0 && <PushNudge />}
+        {messages.length > 0 && block === "none" && <PushNudge />}
 
         {accepted && (
           <div className="flex flex-col gap-2 rounded-xl border border-line bg-white p-3">
@@ -141,7 +169,7 @@ export default async function ConversationPage({ params }: Props) {
                     <span className="text-[13px] text-muted">
                       {t(`offerStatus.${m.offerStatus ?? "pending"}`)} · {time.format(m.createdAt)}
                     </span>
-                    {!mine && m.offerStatus === "pending" && (
+                    {!mine && m.offerStatus === "pending" && block === "none" && (
                       <div className="flex gap-2">
                         <form action={respondOfferAction} className="flex-1">
                           <input type="hidden" name="messageId" value={m.id} />
@@ -182,7 +210,20 @@ export default async function ConversationPage({ params }: Props) {
         {messages.length === 0 && <p className="text-center text-sm text-muted">{t("firstMessage")}</p>}
       </div>
 
-      {listing.status === "removed" ? (
+      {block !== "none" ? (
+        <div className="flex flex-col items-center gap-1 border-t border-line bg-white p-4 text-center">
+          <p className="text-sm text-muted">{block === "iBlocked" ? tb("youBlocked") : tb("cantReply")}</p>
+          {block === "iBlocked" && (
+            <BlockControl
+              locale={locale}
+              userId={other.id}
+              name={other.name ?? t("someone")}
+              blocked
+              back={`/${locale}/messages/${conversation.id}`}
+            />
+          )}
+        </div>
+      ) : listing.status === "removed" ? (
         <p className="border-t border-line bg-white p-4 text-center text-sm text-muted">{t("listingRemoved")}</p>
       ) : (
         <Composer conversationId={conversation.id} locale={locale} />

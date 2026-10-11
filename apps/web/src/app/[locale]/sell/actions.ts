@@ -1,20 +1,31 @@
 "use server";
 
-import { listingInput, MAX_PHOTOS_PER_LISTING } from "@ormaro/shared";
+import { type Condition, listingInput, type Locale, MAX_PHOTOS_PER_LISTING } from "@ormaro/shared";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
-import { createListing } from "@/lib/listings";
+import { createListing, updateListing } from "@/lib/listings";
 import { getActiveUser } from "@/lib/session";
 import { isValidPhotoKey } from "@/lib/storage";
 import { translateToAll } from "@/lib/translate";
 
 export type SellState = { error?: string; fields?: Record<string, string> };
 
-export async function createListingAction(_prev: SellState, formData: FormData): Promise<SellState> {
-  const locale = String(formData.get("locale") ?? "me");
-  const user = await getActiveUser();
-  if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/${locale}/sell`)}`);
+type Parsed = {
+  data: {
+    title: string;
+    description: string;
+    priceEuro: number;
+    categoryKey: string;
+    condition: Condition;
+    cityKey: string;
+    language: Locale;
+  };
+  photoKeys: string[];
+};
 
+/** İlan formunu doğrular; hem yeni ilan hem düzenleme için kullanılır. */
+function parseListingForm(formData: FormData, userId: string): Parsed | SellState {
   const fields = Object.fromEntries(
     ["title", "description", "price", "categoryKey", "condition", "cityKey", "language"].map((k) => [
       k,
@@ -30,10 +41,11 @@ export async function createListingAction(_prev: SellState, formData: FormData):
     return { error: "generic", fields };
   }
   // Yalnızca bu kullanıcının yüklediği fotoğraflar kabul edilir.
-  const ownPrefix = `listings/${user.id}/`;
+  const ownPrefix = `listings/${userId}/`;
   if (photoKeys.some((k) => !isValidPhotoKey(k) || !k.startsWith(ownPrefix))) {
     return { error: "generic", fields };
   }
+  photoKeys = [...new Set(photoKeys)];
   if (photoKeys.length === 0) return { error: "photosRequired", fields };
   if (photoKeys.length > MAX_PHOTOS_PER_LISTING) return { error: "tooManyPhotos", fields };
 
@@ -63,16 +75,36 @@ export async function createListingAction(_prev: SellState, formData: FormData):
                 : "generic";
     return { error, fields };
   }
+  return { data: parsed.data, photoKeys };
+}
 
-  const id = await createListing({ sellerId: user.id, ...parsed.data, photoKeys });
+export async function createListingAction(_prev: SellState, formData: FormData): Promise<SellState> {
+  const locale = String(formData.get("locale") ?? "me");
+  const user = await getActiveUser();
+  if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/${locale}/sell`)}`);
+  const parsed = parseListingForm(formData, user.id);
+  if (!("data" in parsed)) return parsed;
+
+  const id = await createListing({ sellerId: user.id, ...parsed.data, photoKeys: parsed.photoKeys });
   // Diğer dillere çeviri yanıt gönderildikten sonra yapılır; satıcı beklemez.
-  after(() =>
-    translateToAll({
-      id,
-      title: parsed.data.title,
-      description: parsed.data.description,
-      language: parsed.data.language,
-    }),
-  );
+  after(() => translateToAll({ id, ...parsed.data }));
+  redirect(`/${locale}/listing/${id}`);
+}
+
+export async function updateListingAction(_prev: SellState, formData: FormData): Promise<SellState> {
+  const locale = String(formData.get("locale") ?? "me");
+  const id = String(formData.get("listingId") ?? "");
+  const user = await getActiveUser();
+  if (!user) redirect(`/${locale}/login?next=${encodeURIComponent(`/${locale}/listing/${id}/edit`)}`);
+  if (!/^[0-9a-f-]{36}$/.test(id)) return { error: "generic" };
+  const parsed = parseListingForm(formData, user.id);
+  if (!("data" in parsed)) return parsed;
+
+  const result = await updateListing(id, user.id, { ...parsed.data, photoKeys: parsed.photoKeys });
+  if (!result) return { error: "generic" };
+  // Metin değiştiyse eski çeviriler silindi; yenileri arka planda üretilir.
+  if (result.textChanged) after(() => translateToAll({ id, ...parsed.data }));
+  revalidatePath(`/${locale}/listing/${id}`);
+  revalidatePath(`/${locale}/profile`);
   redirect(`/${locale}/listing/${id}`);
 }

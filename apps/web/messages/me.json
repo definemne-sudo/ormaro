@@ -73,7 +73,10 @@
     "translatedFrom": "Automatski prevod · Jezik oglasa: {language}",
     "originalShown": "Originalni tekst ({language})",
     "showOriginal": "Prikaži original",
-    "showTranslation": "Prikaži prevod"
+    "showTranslation": "Prikaži prevod",
+    "edit": "Izmijeni oglas",
+    "youBlockedSeller": "Blokirao/la si ovog prodavca. Da pošalješ poruku, prvo ga odblokiraj na njegovom profilu.",
+    "cantMessage": "Ne možeš poslati poruku ovom prodavcu."
   },
   "sell": {
     "title": "Postavi oglas",
@@ -110,7 +113,10 @@
       "categoryRequired": "Izaberi kategoriju.",
       "conditionRequired": "Izaberi stanje predmeta.",
       "generic": "Nešto nije u redu. Pokušaj ponovo."
-    }
+    },
+    "editTitle": "Izmijeni oglas",
+    "save": "Sačuvaj izmjene",
+    "makeCover": "Postavi kao naslovnu"
   },
   "profile": {
     "title": "Profil",
@@ -122,7 +128,9 @@
     "newListing": "Postavi novi oglas",
     "logout": "Odjavi se",
     "publicProfile": "Moj javni profil",
-    "admin": "Administracija"
+    "admin": "Administracija",
+    "edit": "Izmijeni profil",
+    "blocked": "Blokirane osobe"
   },
   "login": {
     "title": "Prijava",
@@ -242,7 +250,8 @@
     "sendOffer": "Pošalji ponudu",
     "offer": "Daj ponudu",
     "placeholder": "Napiši poruku",
-    "send": "Pošalji"
+    "send": "Pošalji",
+    "options": "Opcije"
   },
   "user": {
     "someone": "Korisnik",
@@ -347,5 +356,40 @@
     "offer": "Nova ponuda: {amount}",
     "offerAccepted": "Prihvatio/la je tvoju ponudu od {amount}",
     "offerDeclined": "Odbio/la je tvoju ponudu od {amount}"
+  },
+  "profileEdit": {
+    "title": "Izmijeni profil",
+    "photoAlt": "Tvoja profilna fotografija",
+    "addPhoto": "Dodaj fotografiju",
+    "changePhoto": "Promijeni fotografiju",
+    "removePhoto": "Ukloni fotografiju",
+    "uploading": "Otpremanje…",
+    "name": "Tvoje ime",
+    "nameHint": "Kupci i prodavci te vide pod ovim imenom.",
+    "city": "Tvoj grad",
+    "optional": "(nije obavezno)",
+    "noCity": "Nije izabran",
+    "cityHint": "Biće unaprijed izabran kad postavljaš oglas.",
+    "save": "Sačuvaj",
+    "saving": "Čuvanje…",
+    "errors": {
+      "name": "Ime mora imati od 2 do 60 znakova.",
+      "photo": "Fotografija nije otpremljena. Probaj drugu.",
+      "generic": "Čuvanje nije uspjelo. Pokušaj ponovo."
+    }
+  },
+  "block": {
+    "block": "Blokiraj ovog korisnika",
+    "unblock": "Odblokiraj",
+    "blockName": "Blokiraj: {name}",
+    "hint": "Osoba koju blokiraš ne može ti slati poruke ni ponude, a ni ti njoj.",
+    "confirm": "Blokirati korisnika {name}? Nećete moći da razmjenjujete poruke ni ponude. Blokadu možeš ukloniti bilo kada.",
+    "confirmButton": "Blokiraj",
+    "youBlocked": "Blokirao/la si ovu osobu.",
+    "cantReply": "Na ovaj razgovor više nije moguće odgovoriti.",
+    "listTitle": "Blokirane osobe",
+    "listHint": "Ove osobe ti ne mogu slati poruke ni ponude, a razgovori s njima su sakriveni.",
+    "listEmpty": "Nikoga nijesi blokirao/la.",
+    "someone": "Korisnik"
   }
 }

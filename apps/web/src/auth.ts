@@ -1,4 +1,5 @@
 import { getDb, schema } from "@ormaro/db";
+import { sql } from "drizzle-orm";
 import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
@@ -48,8 +49,10 @@ async function upsertUser(input: { email: string; name?: string | null; image?: 
       target: schema.users.email,
       set: {
         email,
-        // Şifreyle girişte resim gelmez; Google'dan gelen resim silinmesin.
-        ...(input.image ? { avatarUrl: input.image } : {}),
+        // Kullanıcı kendi fotoğrafını yüklediyse korunur; yoksa Google'daki güncel resim alınır.
+        // Şifreyle girişte resim gelmez, mevcut resim silinmez.
+        avatarUrl: sql`case when ${schema.users.avatarUrl} like 'avatars/%' then ${schema.users.avatarUrl}
+          else coalesce(excluded.avatar_url, ${schema.users.avatarUrl}) end`,
         ...(admin ? { role: "admin" as const } : {}),
       },
     })

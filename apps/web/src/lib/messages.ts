@@ -2,6 +2,7 @@ import { type Db, getDb, schema } from "@ormaro/db";
 import { aliasedTable, and, asc, count, desc, eq, isNull, ne, or, sql } from "drizzle-orm";
 
 import type { Locale } from "@ormaro/shared";
+import { isBlockedEitherWay } from "./blocks";
 import { titleIn } from "./listings";
 
 const { conversations, messages, listings, users } = schema;
@@ -23,6 +24,7 @@ export async function getOrCreateConversation(listingId: string, buyerId: string
     .limit(1);
   if (!listing || listing.status === "removed") return { error: "not_found" as const };
   if (listing.sellerId === buyerId) return { error: "own_listing" as const };
+  if (await isBlockedEitherWay(buyerId, listing.sellerId)) return { error: "blocked" as const };
 
   await db()
     .insert(conversations)
@@ -40,6 +42,7 @@ export type ConversationRow = {
   id: string;
   role: "buyer" | "seller";
   otherName: string | null;
+  otherAvatar: string | null;
   listingId: string;
   listingTitle: string;
   listingPrice: number;
@@ -71,6 +74,7 @@ export async function listConversations(
       id: conversations.id,
       buyerId: conversations.buyerId,
       otherName: other.name,
+      otherAvatar: other.avatarUrl,
       listingId: listings.id,
       listingTitle: titleIn(locale),
       listingPrice: listings.priceEuro,
@@ -91,7 +95,14 @@ export async function listConversations(
       other,
       sql`${other.id} = case when ${conversations.buyerId} = ${userId} then ${conversations.sellerId} else ${conversations.buyerId} end`,
     )
-    .where(and(who, sql`exists (select 1 from messages m where m.conversation_id = "conversations"."id")`))
+    .where(
+      and(
+        who,
+        sql`exists (select 1 from messages m where m.conversation_id = "conversations"."id")`,
+        // Engellediğim kişilerle olan sohbetler listede görünmez.
+        sql`not exists (select 1 from user_blocks b where b.blocker_id = ${userId} and b.blocked_id = ${other.id})`,
+      ),
+    )
     .orderBy(desc(conversations.lastMessageAt))
     .limit(100);
 
@@ -99,6 +110,7 @@ export async function listConversations(
     id: r.id,
     role: r.buyerId === userId ? "buyer" : "seller",
     otherName: r.otherName,
+    otherAvatar: r.otherAvatar,
     listingId: r.listingId,
     listingTitle: r.listingTitle,
     listingPrice: r.listingPrice,
@@ -128,8 +140,8 @@ export async function getConversation(id: string, userId: string, locale?: Local
         status: listings.status,
       },
       coverKey: sql<string | null>`(select lp.url from listing_photos lp where lp.listing_id = "listings"."id" order by lp.position limit 1)`,
-      buyer: { id: buyer.id, name: buyer.name },
-      seller: { id: seller.id, name: seller.name },
+      buyer: { id: buyer.id, name: buyer.name, avatarUrl: buyer.avatarUrl },
+      seller: { id: seller.id, name: seller.name, avatarUrl: seller.avatarUrl },
     })
     .from(conversations)
     .innerJoin(listings, eq(listings.id, conversations.listingId))
@@ -174,6 +186,8 @@ export async function sendMessage(
 ) {
   const c = await assertParticipant(conversationId, senderId);
   if (!c) return null;
+  const recipientId = c.buyerId === senderId ? c.sellerId : c.buyerId;
+  if (await isBlockedEitherWay(senderId, recipientId)) return null;
   const now = new Date();
   await db().transaction(async (tx) => {
     if (input.kind === "offer") {
@@ -195,7 +209,7 @@ export async function sendMessage(
     await tx.update(conversations).set({ lastMessageAt: now }).where(eq(conversations.id, conversationId));
   });
   /** Bildirim gidecek karşı taraf. */
-  return { recipientId: c.buyerId === senderId ? c.sellerId : c.buyerId };
+  return { recipientId };
 }
 
 /** Teklife yalnızca teklifi alan taraf yanıt verebilir. */
@@ -211,6 +225,7 @@ export async function respondToOffer(messageId: string, userId: string, accept: 
     .where(and(eq(messages.id, messageId), eq(messages.kind, "offer")))
     .limit(1);
   if (!m || m.status !== "pending" || m.senderId === userId) return null;
+  if (await isBlockedEitherWay(userId, m.senderId)) return null;
   if (!(await assertParticipant(m.conversationId, userId))) return null;
   await db()
     .update(messages)
@@ -246,6 +261,7 @@ export async function unreadCount(userId: string): Promise<number> {
         or(eq(conversations.buyerId, userId), eq(conversations.sellerId, userId)),
         ne(messages.senderId, userId),
         isNull(messages.readAt),
+        sql`not exists (select 1 from user_blocks b where b.blocker_id = ${userId} and b.blocked_id = ${messages.senderId})`,
       ),
     );
   return row?.n ?? 0;
