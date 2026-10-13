@@ -43,7 +43,8 @@
     "sortNew": "Newest",
     "sortPriceAsc": "Cheapest",
     "sortPriceDesc": "Most expensive",
-    "noResults": "Nothing matches this search. Try removing some filters."
+    "noResults": "Nothing matches this search. Try removing some filters.",
+    "shippingOnly": "Only items that can be shipped"
   },
   "listing": {
     "photos": "Photos",
@@ -76,7 +77,14 @@
     "showTranslation": "Show translation",
     "edit": "Edit listing",
     "youBlockedSeller": "You've blocked this seller. Unblock them from their profile to send a message.",
-    "cantMessage": "You can't message this seller."
+    "cantMessage": "You can't message this seller.",
+    "tagShipping": "Shipping",
+    "tagFreeShipping": "Free shipping",
+    "delivery": {
+      "none": "Pickup in person",
+      "buyer": "Shipping · buyer pays",
+      "seller": "Free shipping"
+    }
   },
   "sell": {
     "title": "Sell something",
@@ -116,7 +124,18 @@
     },
     "editTitle": "Edit listing",
     "save": "Save changes",
-    "makeCover": "Make cover"
+    "makeCover": "Make cover",
+    "shippingLabel": "Delivery",
+    "shipping": {
+      "none": "Pickup in person only",
+      "buyer": "I can also ship · buyer pays shipping",
+      "seller": "I can also ship · I pay shipping"
+    },
+    "shippingHint": {
+      "none": "You meet the buyer and hand it over.",
+      "buyer": "The price and the shipping fee are paid by the buyer on delivery.",
+      "seller": "The price is paid on delivery; you pay the shipping fee when you send it."
+    }
   },
   "profile": {
     "title": "Profile",
@@ -355,7 +374,11 @@
   "push": {
     "offer": "New offer: {amount}",
     "offerAccepted": "Accepted your {amount} offer",
-    "offerDeclined": "Declined your {amount} offer"
+    "offerDeclined": "Declined your {amount} offer",
+    "shipRequested": "Wants you to ship the item",
+    "shipped": "Your parcel is on its way · {courier} {tracking}",
+    "delivered": "Received the parcel",
+    "shipCancelled": "Shipping request cancelled"
   },
   "profileEdit": {
     "title": "Edit profile",
@@ -391,5 +414,62 @@
     "listHint": "These people can't send you messages or offers, and your conversations with them are hidden.",
     "listEmpty": "You haven't blocked anyone.",
     "someone": "A user"
+  },
+  "shipping": {
+    "requestTitle": "Buy with shipping",
+    "requestSummary": "Pay {amount} on delivery",
+    "requestExplain": "The seller ships with cash on delivery. You pay the courier when it arrives; no payment goes through Ormaro.",
+    "feeBuyer": "buyer pays shipping",
+    "feeSeller": "free shipping",
+    "recipientName": "Full name",
+    "phone": "Phone",
+    "city": "City",
+    "address": "Address",
+    "note": "Note",
+    "optional": "(optional)",
+    "notePlaceholder": "E.g. doorbell, best time",
+    "choose": "Choose",
+    "privacy": "Your address and phone are shown only to the seller.",
+    "requestSubmit": "Request shipping",
+    "sellerRequestedTitle": "Shipping requested",
+    "howTitle": "How to ship",
+    "how1": "Hand the parcel to one of the couriers below or any courier you like.",
+    "how2": "Send it cash on delivery (otkupnina); amount to collect: <b>{amount}</b>.",
+    "how3buyer": "The buyer pays shipping: tell the courier “troškove plaća primalac”.",
+    "how3seller": "You pay the shipping fee when you hand it over.",
+    "how4": "Enter the tracking number below; the buyer gets notified.",
+    "couriers": "Couriers",
+    "couriersNote": "Prices depend on the courier and the weight; ask before sending.",
+    "courier": "Courier",
+    "otherCourier": "Other",
+    "courierName": "Courier name",
+    "onlyOther": "(if you chose “Other”)",
+    "tracking": "Tracking number",
+    "markShipped": "I've shipped it",
+    "sellerCancel": "Cancel shipping request",
+    "buyerRequestedTitle": "Your shipping request was sent",
+    "buyerRequestedBody": "We'll let you know with the tracking number when the seller ships it. You'll pay {amount} on delivery.",
+    "buyerCancel": "Cancel request",
+    "cancelledNote": "The shipping request was cancelled.",
+    "shippedTitle": "Parcel shipped",
+    "trackOnSite": "Track on the courier's website",
+    "payOnDelivery": "You'll pay <b>{amount}</b> for the item when the courier arrives.",
+    "plusFee": "The shipping fee is also paid on delivery.",
+    "feePaid": "The seller paid for shipping.",
+    "markDelivered": "I've received it",
+    "sellerShippedBody": "We'll let you know when the buyer receives it. The courier will pay you {amount}.",
+    "returned": "Parcel came back / cancel shipment",
+    "deliveredTitle": "Delivered",
+    "errors": {
+      "notAllowed": "Shipping can't be requested for this listing.",
+      "exists": "There's already a shipping request in this conversation.",
+      "name": "Full name must be 3 to 80 characters.",
+      "phone": "Enter a valid phone number.",
+      "city": "Choose a city.",
+      "address": "Enter the full address (at least 5 characters).",
+      "courier": "Choose a courier.",
+      "tracking": "Enter the tracking number, and the courier name if you chose “Other”.",
+      "generic": "Something went wrong. Try again."
+    }
   }
 }

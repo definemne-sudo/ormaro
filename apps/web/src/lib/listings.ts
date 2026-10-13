@@ -1,6 +1,6 @@
 import { type Db, getDb, schema } from "@ormaro/db";
-import type { CategoryKey, Condition, Locale } from "@ormaro/shared";
-import { and, asc, desc, eq, gte, inArray, lte, sql, type SQL } from "drizzle-orm";
+import type { CategoryKey, Condition, Locale, ShippingOption } from "@ormaro/shared";
+import { and, asc, desc, eq, gte, inArray, lte, ne, sql, type SQL } from "drizzle-orm";
 
 const { listings, listingPhotos, listingTranslations, favorites, users } = schema;
 
@@ -13,6 +13,7 @@ export type ListingCard = {
   status: "active" | "sold" | "removed";
   createdAt: Date;
   coverKey: string | null;
+  shipping: ShippingOption;
 };
 
 function db(): Db {
@@ -45,6 +46,7 @@ const cardColumns = (locale: Locale) => ({
   status: listings.status,
   createdAt: listings.createdAt,
   coverKey,
+  shipping: listings.shipping,
 });
 
 export async function latestListings(locale: Locale, limit = 20): Promise<ListingCard[]> {
@@ -63,6 +65,8 @@ export type SearchFilters = {
   min?: number;
   max?: number;
   condition?: Condition;
+  /** Yalnızca kargo ile gönderilebilen ilanlar. */
+  shipping?: boolean;
   sort?: "new" | "price_asc" | "price_desc";
 };
 
@@ -97,6 +101,7 @@ export async function searchListings(f: SearchFilters, locale: Locale, limit = 5
   if (f.category) where.push(eq(listings.categoryKey, f.category));
   if (f.city) where.push(eq(listings.cityKey, f.city));
   if (f.condition) where.push(eq(listings.condition, f.condition));
+  if (f.shipping) where.push(ne(listings.shipping, "none"));
   if (f.min !== undefined) where.push(gte(listings.priceEuro, f.min));
   if (f.max !== undefined) where.push(lte(listings.priceEuro, f.max));
 
@@ -144,6 +149,7 @@ export async function createListing(input: {
   cityKey: string;
   condition: Condition;
   language: "me" | "en" | "tr" | "ru";
+  shipping: ShippingOption;
   photoKeys: string[];
 }): Promise<string> {
   return db().transaction(async (tx) => {
@@ -158,6 +164,7 @@ export async function createListing(input: {
         cityKey: input.cityKey,
         condition: input.condition,
         language: input.language,
+        shipping: input.shipping,
       })
       .returning({ id: listings.id });
     if (!row) throw new Error("İlan kaydedilemedi.");
@@ -185,6 +192,7 @@ export async function updateListing(
     cityKey: string;
     condition: Condition;
     language: Locale;
+    shipping: ShippingOption;
     photoKeys: string[];
   },
 ): Promise<{ textChanged: boolean } | null> {
@@ -207,6 +215,7 @@ export async function updateListing(
         cityKey: input.cityKey,
         condition: input.condition,
         language: input.language,
+        shipping: input.shipping,
         updatedAt: new Date(),
       })
       .where(eq(listings.id, id));

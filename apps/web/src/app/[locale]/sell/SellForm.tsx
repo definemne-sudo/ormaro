@@ -275,6 +275,28 @@ export function SellForm(props: {
         </div>
       </div>
 
+      <fieldset className="flex flex-col gap-2">
+        <legend className={`${labelCls} mb-2`}>{t("shippingLabel")}</legend>
+        {(["none", "buyer", "seller"] as const).map((o) => (
+          <label
+            key={o}
+            className="flex min-h-12 cursor-pointer items-start gap-3 rounded-xl border border-field px-3.5 py-3 has-[:checked]:border-[1.5px] has-[:checked]:border-brand-strong has-[:checked]:bg-brand-tint"
+          >
+            <input
+              type="radio"
+              name="shipping"
+              value={o}
+              defaultChecked={(f.shipping ?? "none") === o}
+              className="mt-0.5 h-5 w-5 flex-none accent-[#c2410c]"
+            />
+            <span className="flex flex-col">
+              <span className="text-[15px] font-semibold">{t(`shipping.${o}`)}</span>
+              <span className="text-[13px] text-muted">{t(`shippingHint.${o}`)}</span>
+            </span>
+          </label>
+        ))}
+      </fieldset>
+
       <div className="flex flex-col gap-1.5">
         <label htmlFor="language" className={labelCls}>
           {t("languageLabel")}

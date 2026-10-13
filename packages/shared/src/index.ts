@@ -78,6 +78,26 @@ export function cityName(key: string, locale: Locale): string {
 }
 
 /** İlan verirken sunucu ve istemcinin birlikte kullandığı doğrulama kuralları. */
+/**
+ * Teslimat: sadece elden, kargo (ücreti alıcı öder) ya da kargo (ücreti satıcı öder).
+ * Kargoda ürün parası her zaman kapıda ödenir (otkupnina); Ormaro paraya dokunmaz.
+ */
+export const shippingOptions = ["none", "buyer", "seller"] as const;
+export type ShippingOption = (typeof shippingOptions)[number];
+
+/**
+ * Karadağ'daki kargo firmaları. Hiçbirinin herkese açık bağlantısı yok; satıcı paketi
+ * kendisi verir. Fiyatlar firmalara göre değişir, burada yalnızca iletişim bilgisi tutulur.
+ */
+export const couriers = [
+  { key: "posta_cg", name: "Pošta Crne Gore (Post Express)", phone: "19801", url: "https://www.postacg.me" },
+  { key: "express_one", name: "Express One", phone: "+382 67 266 688", url: "https://expressone.me" },
+  { key: "pro_express", name: "Pro Express", phone: null, url: "https://pro-express.me" },
+  { key: "other", name: null, phone: null, url: null },
+] as const;
+export type CourierKey = (typeof couriers)[number]["key"];
+export const courierKeys = couriers.map((c) => c.key) as unknown as readonly [CourierKey, ...CourierKey[]];
+
 export const listingInput = z.object({
   title: z.string().trim().min(3).max(120),
   description: z.string().trim().max(4000).default(""),
@@ -86,6 +106,7 @@ export const listingInput = z.object({
   condition: z.enum(conditions),
   cityKey: z.string().refine((k) => cities.some((c) => c.key === k)),
   language: z.enum(locales),
+  shipping: z.enum(shippingOptions).default("none"),
 });
 export type ListingInput = z.infer<typeof listingInput>;
 

@@ -138,6 +138,7 @@ export async function getConversation(id: string, userId: string, locale?: Local
         title: locale ? titleIn(locale) : listings.title,
         priceEuro: listings.priceEuro,
         status: listings.status,
+        shipping: listings.shipping,
       },
       coverKey: sql<string | null>`(select lp.url from listing_photos lp where lp.listing_id = "listings"."id" order by lp.position limit 1)`,
       buyer: { id: buyer.id, name: buyer.name, avatarUrl: buyer.avatarUrl },

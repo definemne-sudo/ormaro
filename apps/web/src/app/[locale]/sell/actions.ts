@@ -1,6 +1,6 @@
 "use server";
 
-import { type Condition, listingInput, type Locale, MAX_PHOTOS_PER_LISTING } from "@ormaro/shared";
+import { type Condition, listingInput, type Locale, MAX_PHOTOS_PER_LISTING, type ShippingOption } from "@ormaro/shared";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { after } from "next/server";
@@ -20,6 +20,7 @@ type Parsed = {
     condition: Condition;
     cityKey: string;
     language: Locale;
+    shipping: ShippingOption;
   };
   photoKeys: string[];
 };
@@ -27,7 +28,7 @@ type Parsed = {
 /** İlan formunu doğrular; hem yeni ilan hem düzenleme için kullanılır. */
 function parseListingForm(formData: FormData, userId: string): Parsed | SellState {
   const fields = Object.fromEntries(
-    ["title", "description", "price", "categoryKey", "condition", "cityKey", "language"].map((k) => [
+    ["title", "description", "price", "categoryKey", "condition", "cityKey", "language", "shipping"].map((k) => [
       k,
       String(formData.get(k) ?? ""),
     ]),
@@ -58,6 +59,7 @@ function parseListingForm(formData: FormData, userId: string): Parsed | SellStat
     condition: fields.condition,
     cityKey: fields.cityKey,
     language: fields.language,
+    shipping: fields.shipping || "none",
   });
   if (!parsed.success) {
     const path = parsed.error.issues[0]?.path[0];
@@ -87,7 +89,9 @@ export async function createListingAction(_prev: SellState, formData: FormData):
 
   const id = await createListing({ sellerId: user.id, ...parsed.data, photoKeys: parsed.photoKeys });
   // Diğer dillere çeviri yanıt gönderildikten sonra yapılır; satıcı beklemez.
-  after(() => translateToAll({ id, ...parsed.data }));
+  after(() =>
+    translateToAll({ id, title: parsed.data.title, description: parsed.data.description, language: parsed.data.language }),
+  );
   redirect(`/${locale}/listing/${id}`);
 }
 
@@ -103,7 +107,11 @@ export async function updateListingAction(_prev: SellState, formData: FormData):
   const result = await updateListing(id, user.id, { ...parsed.data, photoKeys: parsed.photoKeys });
   if (!result) return { error: "generic" };
   // Metin değiştiyse eski çeviriler silindi; yenileri arka planda üretilir.
-  if (result.textChanged) after(() => translateToAll({ id, ...parsed.data }));
+  if (result.textChanged) {
+    after(() =>
+      translateToAll({ id, title: parsed.data.title, description: parsed.data.description, language: parsed.data.language }),
+    );
+  }
   revalidatePath(`/${locale}/listing/${id}`);
   revalidatePath(`/${locale}/profile`);
   redirect(`/${locale}/listing/${id}`);

@@ -43,7 +43,8 @@
     "sortNew": "Najnovije",
     "sortPriceAsc": "Najjeftinije",
     "sortPriceDesc": "Najskuplje",
-    "noResults": "Nema oglasa za ovu pretragu. Probaj sa manje filtera."
+    "noResults": "Nema oglasa za ovu pretragu. Probaj sa manje filtera.",
+    "shippingOnly": "Samo oglasi sa dostavom"
   },
   "listing": {
     "photos": "Fotografije",
@@ -76,7 +77,14 @@
     "showTranslation": "Prikaži prevod",
     "edit": "Izmijeni oglas",
     "youBlockedSeller": "Blokirao/la si ovog prodavca. Da pošalješ poruku, prvo ga odblokiraj na njegovom profilu.",
-    "cantMessage": "Ne možeš poslati poruku ovom prodavcu."
+    "cantMessage": "Ne možeš poslati poruku ovom prodavcu.",
+    "tagShipping": "Dostava",
+    "tagFreeShipping": "Besplatna dostava",
+    "delivery": {
+      "none": "Lično preuzimanje",
+      "buyer": "Dostava · plaća kupac",
+      "seller": "Besplatna dostava"
+    }
   },
   "sell": {
     "title": "Postavi oglas",
@@ -116,7 +124,18 @@
     },
     "editTitle": "Izmijeni oglas",
     "save": "Sačuvaj izmjene",
-    "makeCover": "Postavi kao naslovnu"
+    "makeCover": "Postavi kao naslovnu",
+    "shippingLabel": "Isporuka",
+    "shipping": {
+      "none": "Samo lično preuzimanje",
+      "buyer": "Šaljem i brzom poštom · dostavu plaća kupac",
+      "seller": "Šaljem i brzom poštom · dostavu plaćam ja"
+    },
+    "shippingHint": {
+      "none": "Nalaziš se s kupcem i predaješ lično.",
+      "buyer": "Cijenu i dostavu kupac plaća pri preuzimanju.",
+      "seller": "Cijena se plaća pri preuzimanju, a dostavu plaćaš ti kad predaješ paket."
+    }
   },
   "profile": {
     "title": "Profil",
@@ -355,7 +374,11 @@
   "push": {
     "offer": "Nova ponuda: {amount}",
     "offerAccepted": "Prihvatio/la je tvoju ponudu od {amount}",
-    "offerDeclined": "Odbio/la je tvoju ponudu od {amount}"
+    "offerDeclined": "Odbio/la je tvoju ponudu od {amount}",
+    "shipRequested": "Želi da mu pošalješ brzom poštom",
+    "shipped": "Paket je poslat · {courier} {tracking}",
+    "delivered": "Preuzeo/la je paket",
+    "shipCancelled": "Zahtjev za slanje je otkazan"
   },
   "profileEdit": {
     "title": "Izmijeni profil",
@@ -391,5 +414,62 @@
     "listHint": "Ove osobe ti ne mogu slati poruke ni ponude, a razgovori s njima su sakriveni.",
     "listEmpty": "Nikoga nijesi blokirao/la.",
     "someone": "Korisnik"
+  },
+  "shipping": {
+    "requestTitle": "Kupi uz dostavu",
+    "requestSummary": "Plaćaš {amount} pri preuzimanju",
+    "requestExplain": "Prodavac šalje paket sa otkupninom. Kuriru plaćaš kad paket stigne; plaćanje ne ide preko Ormara.",
+    "feeBuyer": "dostavu plaća kupac",
+    "feeSeller": "besplatna dostava",
+    "recipientName": "Ime i prezime",
+    "phone": "Telefon",
+    "city": "Grad",
+    "address": "Adresa",
+    "note": "Napomena",
+    "optional": "(nije obavezno)",
+    "notePlaceholder": "Npr. zvono, najbolje vrijeme",
+    "choose": "Izaberi",
+    "privacy": "Adresa i telefon vidljivi su samo prodavcu.",
+    "requestSubmit": "Zatraži slanje",
+    "sellerRequestedTitle": "Stigao je zahtjev za slanje",
+    "howTitle": "Kako poslati?",
+    "how1": "Predaj paket nekoj od kurirskih službi ispod ili bilo kojoj drugoj.",
+    "how2": "Pošalji sa otkupninom; iznos za naplatu: <b>{amount}</b>.",
+    "how3buyer": "Dostavu plaća kupac: reci kuriru „troškove plaća primalac”.",
+    "how3seller": "Dostavu plaćaš ti kad predaješ paket.",
+    "how4": "Upiši broj pošiljke ispod; kupac dobija obavještenje.",
+    "couriers": "Kurirske službe",
+    "couriersNote": "Cijene zavise od službe i težine paketa; provjeri prije slanja.",
+    "courier": "Kurirska služba",
+    "otherCourier": "Druga",
+    "courierName": "Naziv službe",
+    "onlyOther": "(ako si izabrao/la „Druga”)",
+    "tracking": "Broj pošiljke",
+    "markShipped": "Poslao/la sam",
+    "sellerCancel": "Otkaži zahtjev za slanje",
+    "buyerRequestedTitle": "Zahtjev za slanje je poslat prodavcu",
+    "buyerRequestedBody": "Javićemo ti broj pošiljke kad prodavac pošalje paket. Pri preuzimanju plaćaš {amount}.",
+    "buyerCancel": "Otkaži zahtjev",
+    "cancelledNote": "Zahtjev za slanje je otkazan.",
+    "shippedTitle": "Paket je poslat",
+    "trackOnSite": "Prati na sajtu kurirske službe",
+    "payOnDelivery": "Kad kurir stigne, za predmet plaćaš <b>{amount}</b>.",
+    "plusFee": "Dostava se takođe plaća pri preuzimanju.",
+    "feePaid": "Dostavu je platio prodavac.",
+    "markDelivered": "Preuzeo/la sam",
+    "sellerShippedBody": "Javićemo ti kad kupac preuzme paket. Kurirska služba će ti isplatiti {amount}.",
+    "returned": "Paket je vraćen / otkaži slanje",
+    "deliveredTitle": "Isporučeno",
+    "errors": {
+      "notAllowed": "Za ovaj oglas nije moguće zatražiti slanje.",
+      "exists": "U ovom razgovoru već postoji zahtjev za slanje.",
+      "name": "Ime i prezime mora imati od 3 do 80 znakova.",
+      "phone": "Unesi ispravan broj telefona.",
+      "city": "Izaberi grad.",
+      "address": "Upiši punu adresu (najmanje 5 znakova).",
+      "courier": "Izaberi kurirsku službu.",
+      "tracking": "Upiši broj pošiljke i naziv službe ako si izabrao/la „Druga”.",
+      "generic": "Nešto nije u redu. Pokušaj ponovo."
+    }
   }
 }

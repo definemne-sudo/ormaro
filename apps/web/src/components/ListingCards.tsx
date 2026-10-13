@@ -22,6 +22,17 @@ function Cover({ coverKey, className }: { coverKey: string | null; className: st
 }
 
 /** Ana sayfadaki iki sütunlu ızgara. */
+/** Kargo varsa küçük etiket: "Ücretsiz kargo" ya da "Kargo var". */
+async function ShippingTag({ shipping }: { shipping: ListingCard["shipping"] }) {
+  if (shipping === "none") return null;
+  const t = await getTranslations("listing");
+  return (
+    <span className="self-start rounded-md bg-brand-tint px-1.5 py-0.5 text-[11px] font-bold text-brand-deep">
+      {shipping === "seller" ? t("tagFreeShipping") : t("tagShipping")}
+    </span>
+  );
+}
+
 export async function ListingGrid({ items }: { items: ListingCard[] }) {
   const locale = (await getLocale()) as Locale;
   return (
@@ -36,6 +47,7 @@ export async function ListingGrid({ items }: { items: ListingCard[] }) {
             <div className="flex flex-col gap-1 px-3 pt-2.5 pb-3">
               <span className="text-[17px] font-bold">{formatPrice(item.priceEuro, locale)}</span>
               <span className="line-clamp-2 text-sm leading-snug">{item.title}</span>
+              <ShippingTag shipping={item.shipping} />
               <span className="text-xs text-muted">
                 {cityName(item.cityKey, locale)} · {formatRelative(item.createdAt, locale)}
               </span>
@@ -64,7 +76,10 @@ export async function ListingList({ items }: { items: ListingCard[] }) {
             <div className="flex min-w-0 flex-1 flex-col gap-1 py-0.5">
               <span className="text-lg font-bold">{formatPrice(item.priceEuro, locale)}</span>
               <span className="line-clamp-2 text-[15px] leading-snug">{item.title}</span>
-              <span className="text-[13px] text-muted">{tc(item.condition)}</span>
+              <span className="flex flex-wrap items-center gap-2 text-[13px] text-muted">
+                {tc(item.condition)}
+                <ShippingTag shipping={item.shipping} />
+              </span>
               <span className="mt-auto flex items-center gap-2 text-xs text-muted">
                 {cityName(item.cityKey, locale)} · {formatRelative(item.createdAt, locale)}
                 {item.status !== "active" && (

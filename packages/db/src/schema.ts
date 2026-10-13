@@ -36,6 +36,8 @@ export const reportReasonEnum = pgEnum("report_reason", [
   "other",
 ]);
 export const emailCodePurposeEnum = pgEnum("email_code_purpose", ["register", "reset"]);
+export const shippingEnum = pgEnum("shipping_option", ["none", "buyer", "seller"]);
+export const shipmentStatusEnum = pgEnum("shipment_status", ["requested", "shipped", "delivered", "cancelled"]);
 export const reportStatusEnum = pgEnum("report_status", ["open", "reviewing", "closed"]);
 
 const createdAt = () => timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
@@ -112,6 +114,8 @@ export const listings = pgTable(
     /** İlanın yazıldığı dil; ileride otomatik çeviri buna göre yapılacak. */
     language: localeEnum("language").notNull(),
     status: listingStatusEnum("status").notNull().default("active"),
+    /** Kargo seçeneği; "none" ise yalnızca elden teslim. */
+    shipping: shippingEnum("shipping").notNull().default("none"),
     createdAt: createdAt(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
@@ -312,5 +316,53 @@ export const userBlocks = pgTable(
     primaryKey({ columns: [t.blockerId, t.blockedId] }),
     index("user_blocks_blocked_idx").on(t.blockedId),
     check("user_blocks_not_self_check", sql`${t.blockerId} <> ${t.blockedId}`),
+  ],
+);
+
+/**
+ * Kargo ile satış. Alıcı adresini girer, satıcı paketi kapıda ödemeli (otkupnina)
+ * gönderip takip numarasını yazar, alıcı teslim alınca onaylar.
+ * Adres ve telefon yalnızca iki tarafa görünür.
+ */
+export const shipments = pgTable(
+  "shipments",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    conversationId: uuid("conversation_id")
+      .notNull()
+      .references(() => conversations.id, { onDelete: "cascade" }),
+    listingId: uuid("listing_id")
+      .notNull()
+      .references(() => listings.id, { onDelete: "cascade" }),
+    buyerId: uuid("buyer_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    sellerId: uuid("seller_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** Kapıda tahsil edilecek ürün tutarı (avro). */
+    amountEuro: integer("amount_euro").notNull(),
+    shippingPayer: shippingEnum("shipping_payer").notNull(),
+    recipientName: text("recipient_name").notNull(),
+    phone: text("phone").notNull(),
+    cityKey: text("city_key")
+      .notNull()
+      .references(() => cities.key),
+    address: text("address").notNull(),
+    note: text("note").notNull().default(""),
+    status: shipmentStatusEnum("status").notNull().default("requested"),
+    courierKey: text("courier_key"),
+    courierName: text("courier_name"),
+    trackingNumber: text("tracking_number"),
+    shippedAt: timestamp("shipped_at", { withTimezone: true }),
+    deliveredAt: timestamp("delivered_at", { withTimezone: true }),
+    cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index("shipments_conversation_idx").on(t.conversationId, t.createdAt),
+    index("shipments_buyer_idx").on(t.buyerId),
+    index("shipments_seller_idx").on(t.sellerId),
+    check("shipments_amount_check", sql`${t.amountEuro} >= 0`),
   ],
 );

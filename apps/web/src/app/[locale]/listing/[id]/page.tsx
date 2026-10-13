@@ -124,6 +124,13 @@ export default async function ListingPage({ params, searchParams }: Props) {
         <ul className="flex flex-wrap gap-2 text-[13px] font-semibold">
           <li className="rounded-full bg-surface px-3 py-1.5">{tcond(listing.condition)}</li>
           <li className="rounded-full bg-surface px-3 py-1.5">{tc(listing.categoryKey)}</li>
+          <li
+            className={
+              "rounded-full px-3 py-1.5 " + (listing.shipping === "none" ? "bg-surface" : "bg-brand-tint text-brand-deep")
+            }
+          >
+            {t(`delivery.${listing.shipping}`)}
+          </li>
           {!translation && (
             <li className="rounded-full bg-surface px-3 py-1.5">
               {t("writtenIn", { language: localeNames[listing.language] })}

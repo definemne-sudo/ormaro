@@ -49,6 +49,7 @@ export default async function EditListingPage({ params }: Props) {
           condition: l.condition,
           cityKey: l.cityKey,
           language: l.language,
+          shipping: l.shipping,
         },
         photos: data.photos.map((key) => ({ key, src: photoSrc(key) })),
       }}

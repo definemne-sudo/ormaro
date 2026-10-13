@@ -6,6 +6,9 @@ import { AutoRefresh } from "@/components/AutoRefresh";
 import { BlockControl } from "@/components/BlockControl";
 import { PushNudge } from "@/components/Pwa";
 import { blockState } from "@/lib/blocks";
+import { getUser } from "@/lib/listings";
+import { shipmentForConversation } from "@/lib/shipments";
+import { ShipmentPanel } from "./ShipmentPanel";
 import { BackIcon, ImageIcon } from "@/components/icons";
 import { Avatar } from "@/components/Avatar";
 import { Link } from "@/i18n/navigation";
@@ -21,7 +24,10 @@ import { Composer } from "./Composer";
 
 export const dynamic = "force-dynamic";
 
-type Props = { params: Promise<{ locale: string; id: string }> };
+type Props = {
+  params: Promise<{ locale: string; id: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -29,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: t("title") };
 }
 
-export default async function ConversationPage({ params }: Props) {
+export default async function ConversationPage({ params, searchParams }: Props) {
   const { locale, id } = await params;
   setRequestLocale(locale);
   const user = await requireUser(locale, `/messages/${id}`);
@@ -40,8 +46,13 @@ export default async function ConversationPage({ params }: Props) {
   const t = await getTranslations("chat");
   const tb = await getTranslations("block");
   const { listing, other, role, messages, conversation } = data;
-  const block = await blockState(user.id, other.id);
-  const accepted = messages.find((m) => m.offerStatus === "accepted");
+  const sp = await searchParams;
+  const [block, shipment, me] = await Promise.all([
+    blockState(user.id, other.id),
+    shipmentForConversation(conversation.id),
+    getUser(user.id),
+  ]);
+  const accepted = messages.findLast((m) => m.offerStatus === "accepted");
   const canReview =
     bothParticipated(messages, conversation.buyerId, conversation.sellerId) &&
     !(await existingReview(user.id, listing.id));
@@ -126,7 +137,7 @@ export default async function ConversationPage({ params }: Props) {
             <p className="text-sm font-semibold">
               {t("acceptedNote", { amount: formatPrice(accepted.offerEuro ?? 0, locale) })}
             </p>
-            {role === "seller" && listing.status === "active" && (
+            {role === "seller" && listing.status === "active" && (!shipment || shipment.status === "cancelled") && (
               <form action={setStatusAction}>
                 <input type="hidden" name="id" value={listing.id} />
                 <input type="hidden" name="locale" value={locale} />
@@ -138,6 +149,20 @@ export default async function ConversationPage({ params }: Props) {
             )}
           </div>
         )}
+
+        <ShipmentPanel
+          locale={locale}
+          conversationId={conversation.id}
+          role={role}
+          listing={listing}
+          acceptedOffer={accepted?.offerEuro ?? null}
+          shipment={shipment}
+          blocked={block !== "none"}
+          open={sp.ship === "1"}
+          error={sp.shipError}
+          prefill={{ n: sp.n, p: sp.p, c: sp.c, a: sp.a, o: sp.o }}
+          defaults={{ name: me?.name ?? "", cityKey: me?.cityKey ?? "" }}
+        />
 
         {canReview && (
           <Link

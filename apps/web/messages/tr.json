@@ -43,7 +43,8 @@
     "sortNew": "En yeni",
     "sortPriceAsc": "En ucuz",
     "sortPriceDesc": "En pahalı",
-    "noResults": "Bu aramaya uyan ilan yok. Filtreleri azaltmayı dene."
+    "noResults": "Bu aramaya uyan ilan yok. Filtreleri azaltmayı dene.",
+    "shippingOnly": "Sadece kargo ile gönderilebilenler"
   },
   "listing": {
     "photos": "Fotoğraflar",
@@ -76,7 +77,14 @@
     "showTranslation": "Çeviriyi göster",
     "edit": "İlanı düzenle",
     "youBlockedSeller": "Bu satıcıyı engelledin. Mesaj göndermek için önce profilinden engeli kaldır.",
-    "cantMessage": "Bu satıcıya mesaj gönderemezsin."
+    "cantMessage": "Bu satıcıya mesaj gönderemezsin.",
+    "tagShipping": "Kargo var",
+    "tagFreeShipping": "Ücretsiz kargo",
+    "delivery": {
+      "none": "Elden teslim",
+      "buyer": "Kargo · ücreti alıcıda",
+      "seller": "Ücretsiz kargo"
+    }
   },
   "sell": {
     "title": "İlan ver",
@@ -116,7 +124,18 @@
     },
     "editTitle": "İlanı düzenle",
     "save": "Değişiklikleri kaydet",
-    "makeCover": "Kapak yap"
+    "makeCover": "Kapak yap",
+    "shippingLabel": "Teslimat",
+    "shipping": {
+      "none": "Sadece elden teslim",
+      "buyer": "Kargo ile de gönderirim · ücreti alıcı öder",
+      "seller": "Kargo ile de gönderirim · ücreti ben öderim"
+    },
+    "shippingHint": {
+      "none": "Alıcıyla buluşup elden teslim edersin.",
+      "buyer": "Ürün parası ve kargo ücreti kapıda alıcıdan alınır.",
+      "seller": "Ürün parası kapıda alınır, kargo ücretini paketi verirken sen ödersin."
+    }
   },
   "profile": {
     "title": "Profil",
@@ -355,7 +374,11 @@
   "push": {
     "offer": "Yeni teklif: {amount}",
     "offerAccepted": "{amount} teklifini kabul etti",
-    "offerDeclined": "{amount} teklifini reddetti"
+    "offerDeclined": "{amount} teklifini reddetti",
+    "shipRequested": "Kargo ile göndermeni istiyor",
+    "shipped": "Paketin yola çıktı · {courier} {tracking}",
+    "delivered": "Paketi teslim aldı",
+    "shipCancelled": "Kargo isteği iptal edildi"
   },
   "profileEdit": {
     "title": "Profili düzenle",
@@ -391,5 +414,62 @@
     "listHint": "Bu kişiler sana mesaj ve teklif gönderemez; onlarla olan konuşmalar listende görünmez.",
     "listEmpty": "Kimseyi engellemedin.",
     "someone": "Bir kullanıcı"
+  },
+  "shipping": {
+    "requestTitle": "Kargo ile al",
+    "requestSummary": "Kapıda {amount} ödersin",
+    "requestExplain": "Satıcı paketi kapıda ödemeli kargoyla gönderir. Ürünün parasını kuryeye teslimatta ödersin; Ormaro üzerinden ödeme yapılmaz.",
+    "feeBuyer": "kargo ücreti alıcıda",
+    "feeSeller": "kargo ücretsiz",
+    "recipientName": "Ad soyad",
+    "phone": "Telefon",
+    "city": "Şehir",
+    "address": "Adres",
+    "note": "Not",
+    "optional": "(isteğe bağlı)",
+    "notePlaceholder": "Örn. kapı zili, uygun saat",
+    "choose": "Seç",
+    "privacy": "Adresin ve telefonun yalnızca satıcıya gösterilir.",
+    "requestSubmit": "Kargo iste",
+    "sellerRequestedTitle": "Kargo isteği geldi",
+    "howTitle": "Nasıl gönderilir?",
+    "how1": "Paketi aşağıdaki firmalardan birine ya da istediğin bir kargoya ver.",
+    "how2": "Gönderiyi kapıda ödemeli (otkupnina) yap; tahsil edilecek tutar: <b>{amount}</b>.",
+    "how3buyer": "Kargo ücretini alıcı öder: firmaya “troškove plaća primalac” de.",
+    "how3seller": "Kargo ücretini paketi verirken sen ödersin.",
+    "how4": "Takip numarasını aşağıya yaz; alıcıya bildirim gider.",
+    "couriers": "Kargo firmaları",
+    "couriersNote": "Fiyatlar firmaya ve paketin ağırlığına göre değişir; göndermeden önce firmaya sor.",
+    "courier": "Kargo firması",
+    "otherCourier": "Diğer",
+    "courierName": "Firma adı",
+    "onlyOther": "(“Diğer” seçtiysen)",
+    "tracking": "Takip numarası",
+    "markShipped": "Kargoya verdim",
+    "sellerCancel": "Kargo isteğini iptal et",
+    "buyerRequestedTitle": "Kargo isteğin satıcıya iletildi",
+    "buyerRequestedBody": "Satıcı paketi gönderince takip numarasıyla haber vereceğiz. Kapıda {amount} ödeyeceksin.",
+    "buyerCancel": "İsteği iptal et",
+    "cancelledNote": "Kargo isteği iptal edildi.",
+    "shippedTitle": "Paket kargoda",
+    "trackOnSite": "Firmanın sitesinde takip et",
+    "payOnDelivery": "Kurye geldiğinde ürün için <b>{amount}</b> ödeyeceksin.",
+    "plusFee": "Kargo ücreti de kapıda alınır.",
+    "feePaid": "Kargo ücretini satıcı ödedi.",
+    "markDelivered": "Teslim aldım",
+    "sellerShippedBody": "Alıcı paketi teslim alınca haber vereceğiz. {amount} kargo firması üzerinden sana ödenecek.",
+    "returned": "Paket geri döndü / gönderiyi iptal et",
+    "deliveredTitle": "Teslim edildi",
+    "errors": {
+      "notAllowed": "Bu ilan için kargo istenemiyor.",
+      "exists": "Bu konuşmada zaten bir kargo isteği var.",
+      "name": "Ad soyad 3 ile 80 karakter arasında olmalı.",
+      "phone": "Geçerli bir telefon numarası yaz.",
+      "city": "Şehir seç.",
+      "address": "Adresi açıkça yaz (en az 5 karakter).",
+      "courier": "Kargo firmasını seç.",
+      "tracking": "Takip numarasını ve “Diğer” seçtiysen firma adını yaz.",
+      "generic": "Bir şeyler ters gitti. Tekrar dene."
+    }
   }
 }

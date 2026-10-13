@@ -53,6 +53,7 @@ function parseFilters(sp: Params): SearchFilters {
     condition: conditions.includes(condition as Condition) ? (condition as Condition) : undefined,
     min: num(one(sp.min)),
     max: num(one(sp.max)),
+    shipping: one(sp.shipping) === "1",
     sort: sort === "price_asc" || sort === "price_desc" ? sort : "new",
   };
 }
@@ -74,7 +75,7 @@ export default async function SearchPage({
   const tcond = await getTranslations("conditions");
   const f = parseFilters(await searchParams);
   const items = getDb() ? await searchListings(f, locale as Locale) : [];
-  const activeFilters = [f.category, f.city, f.condition, f.min, f.max].filter(
+  const activeFilters = [f.category, f.city, f.condition, f.min, f.max, f.shipping || undefined].filter(
     (v) => v !== undefined,
   ).length;
   const sortedCities = [...cities].sort((a, b) =>
@@ -169,6 +170,16 @@ export default async function SearchPage({
                 ))}
               </select>
             </div>
+            <label className="col-span-2 flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-field bg-white px-3.5">
+              <input
+                type="checkbox"
+                name="shipping"
+                value="1"
+                defaultChecked={f.shipping}
+                className="h-5 w-5 accent-[#c2410c]"
+              />
+              <span className="text-[15px] font-semibold">{t("shippingOnly")}</span>
+            </label>
             <div className="col-span-2 flex gap-2 pt-1">
               <Link
                 href="/search"

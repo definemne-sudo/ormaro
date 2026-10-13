@@ -80,7 +80,11 @@ export type PushEvent =
   | { kind: "message"; from: string; text: string }
   | { kind: "offer"; from: string; amount: number }
   | { kind: "offerAccepted"; from: string; amount: number }
-  | { kind: "offerDeclined"; from: string; amount: number };
+  | { kind: "offerDeclined"; from: string; amount: number }
+  | { kind: "shipRequested"; from: string; amount: number }
+  | { kind: "shipped"; from: string; amount: number; courier: string; tracking: string }
+  | { kind: "delivered"; from: string; amount: number }
+  | { kind: "shipCancelled"; from: string; amount: number };
 
 /** Kullanıcının bütün cihazlarına bildirim gönderir. Hata olursa sessizce geçer. */
 export async function notifyUser(userId: string, event: PushEvent, conversationId: string) {
@@ -98,7 +102,9 @@ export async function notifyUser(userId: string, event: PushEvent, conversationI
             ? event.text.length > 140
               ? `${event.text.slice(0, 137)}…`
               : event.text
-            : t(event.kind, { amount: formatPrice(event.amount, s.locale) });
+            : event.kind === "shipped"
+              ? t("shipped", { courier: event.courier, tracking: event.tracking })
+              : t(event.kind, { amount: formatPrice(event.amount, s.locale) });
         const payload = JSON.stringify({
           title: event.from,
           body,
